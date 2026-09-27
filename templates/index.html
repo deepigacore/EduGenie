@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduGenie | AI Learning Assistant</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8faff);
+            color: #1f2937;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 48px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin: 5px 0;
+            color: #4f46e5;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .task {
+            border: 2px solid #e5e7eb;
+            background: white;
+            padding: 16px 10px;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .task:hover {
+            transform: translateY(-3px);
+            border-color: #6366f1;
+        }
+
+        .task.active {
+            background: #eef2ff;
+            border-color: #4f46e5;
+        }
+
+        .task-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .input-area {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            padding: 18px;
+            padding-right: 65px;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #6366f1;
+        }
+
+        .voice-btn {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: #4f46e5;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .voice-btn.listening {
+            background: #dc2626;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #4f46e5;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #4338ca;
+        }
+
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .example {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 20px;
+            padding: 9px 14px;
+            cursor: pointer;
+        }
+
+        /* RESPONSE */
+
+        .result {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 22px;
+            line-height: 1.8;
+            min-height: 80px;
+        }
+
+        .answer-content h3 {
+            color: #4f46e5;
+            margin-top: 0;
+        }
+
+        .answer-content h4 {
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .answer-content .point {
+            background: white;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border-left: 4px solid #6366f1;
+        }
+
+        /* QUIZ */
+
+        .quiz-title {
+            color: #4f46e5;
+            margin-top: 0;
+        }
+
+        .quiz-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 18px 0;
+        }
+
+        .quiz-question {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin: 8px 0;
+            color: #334155;
+        }
+
+        .option-letter {
+            font-weight: bold;
+            margin-right: 8px;
+            color: #4f46e5;
+        }
+
+        .quiz-answer {
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #ecfdf5;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        /* SPEECH BUTTONS */
+
+        .result-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .speak-btn {
+            padding: 9px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #e0e7ff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .speak-btn:hover {
+            background: #c7d2fe;
+        }
+
+        .stop-btn {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stop-btn:hover {
+            background: #fecaca;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 800px) {
+
+            .task-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <div class="logo">🧠✨</div>
+
+        <h1>EduGenie</h1>
+
+        <p>Your smart AI learning companion</p>
+
+    </div>
+
+
+
+    <!-- MAIN CARD -->
+
+    <div class="card">
+
+        <h2>👋 What do you want to learn?</h2>
+
+        <p>Choose a learning mode and let EduGenie help you.</p>
+
+
+        <div class="task-grid">
+
+
+            <div class="task active"
+                 onclick="selectTask('qa', this)">
+
+                <span class="task-icon">💬</span>
+
+                Ask
+
+            </div>
+
+
+            <div class="task"
+                 onclick="selectTask('explain', this)">
+
+                <span class="task-icon">🧠</span>
+
+                Explain
+
+            </div>
+
+
+            <div class="task"
+                 onclick="selectTask('quiz', this)">
+
+                <span class="task-icon">📝</span>
+
+                Quiz
+
+            </div>
+
+
+            <div class="task"
+                 onclick="selectTask('summarize', this)">
+
+                <span class="task-icon">📚</span>
+
+                Summarize
+
+            </div>
+
+
+            <div class="task"
+                 onclick="selectTask('learn', this)">
+
+                <span class="task-icon">🚀</span>
+
+                Learning Path
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- INPUT -->
+
+        <div class="input-area">
+
+            <textarea
+                id="inputText"
+                placeholder="Ask me anything..."></textarea>
+
+
+            <button
+                class="voice-btn"
+                id="voiceBtn"
+                onclick="startVoice()"
+                title="Speak">
+
+                🎤
+
+            </button>
+
+        </div>
+
+
+
+        <!-- EXAMPLES -->
+
+        <div class="examples">
+
+            <button
+                class="example"
+                onclick="setExample('Explain Python in simple words')">
+
+                💡 Explain Python
+
+            </button>
+
+
+            <button
+                class="example"
+                onclick="setExample('What is an algorithm?')">
+
+                💡 What is an algorithm?
+
+            </button>
+
+
+            <button
+                class="example"
+                onclick="setExample('Create a quiz about Data Structures')">
+
+                💡 Data Structures Quiz
+
+            </button>
+
+        </div>
+
+
+
+        <!-- SUBMIT -->
+
+        <button
+            class="submit-btn"
+            onclick="submitTask()">
+
+            ✨ Ask EduGenie
+
+        </button>
+
+    </div>
+
+
+
+    <!-- RESPONSE CARD -->
+
+    <div class="card">
+
+        <h2>🤖 EduGenie Response</h2>
+
+
+        <div
+            class="result"
+            id="result">
+
+            <div class="answer-content">
+
+                Your personalized answer will appear here.
+
+            </div>
+
+        </div>
+
+
+        <!-- SPEECH CONTROLS -->
+
+        <div class="result-actions">
+
+            <button
+                class="speak-btn"
+                onclick="readAnswer()">
+
+                🔊 Read Aloud
+
+            </button>
+
+
+            <button
+                class="speak-btn stop-btn"
+                onclick="stopReading()">
+
+                ⏹️ Stop
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        Made for students with ❤️ using AI
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   CURRENT TASK
+========================= */
+
+let currentTask = "qa";
+
+
+
+/* =========================
+   SELECT TASK
+========================= */
+
+function selectTask(task, element) {
+
+    currentTask = task;
+
+
+    document
+        .querySelectorAll(".task")
+        .forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    const textarea =
+        document.getElementById("inputText");
+
+
+    const placeholders = {
+
+        qa: "Ask me anything...",
+
+        explain:
+            "Enter a topic you want explained simply...",
+
+        quiz:
+            "Enter a topic for your quiz...",
+
+        summarize:
+            "Paste the text you want summarized...",
+
+        learn:
+            "What do you want to learn?"
+
+    };
+
+
+    textarea.placeholder =
+        placeholders[task];
+
+}
+
+
+
+/* =========================
+   EXAMPLE BUTTON
+========================= */
+
+function setExample(text) {
+
+    document
+        .getElementById("inputText")
+        .value = text;
+
+}
+
+
+
+/* =========================
+   FORMAT ANSWER
+========================= */
+
+function formatAnswer(text) {
+
+    if (!text) {
+
+        return "No answer received.";
+
+    }
+
+
+    let lines =
+        String(text)
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line !== "");
+
+
+    let html = "";
+
+
+    lines.forEach(function(line) {
+
+
+        /*
+         * HEADINGS
+         *
+         * Removes # symbols completely.
+         */
+
+        if (/^#{1,6}\s*/.test(line)) {
+
+            const heading =
+                line
+                .replace(/^#{1,6}\s*/, "")
+                .trim();
+
+
+            html += `
+                <h3>${heading}</h3>
+            `;
+
+        }
+
+
+        /*
+         * NUMBERED POINTS
+         */
+
+        else if (/^\d+[\.\)]\s*/.test(line)) {
+
+            const match =
+                line.match(/^(\d+)[\.\)]\s*(.*)$/);
+
+
+            const number =
+                match[1];
+
+            const content =
+                match[2];
+
+
+            html += `
+                <div class="point">
+                    <strong>${number}.</strong>
+                    ${content}
+                </div>
+            `;
+
+        }
+
+
+        /*
+         * BULLET POINTS
+         */
+
+        else if (/^[-*•]\s*/.test(line)) {
+
+            const content =
+                line
+                .replace(/^[-*•]\s*/, "")
+                .trim();
+
+
+            html += `
+                <div class="point">
+                    • ${content}
+                </div>
+            `;
+
+        }
+
+
+        /*
+         * NORMAL TEXT
+         */
+
+        else {
+
+            html += `
+                <p>${line}</p>
+            `;
+
+        }
+
+    });
+
+
+    return `
+        <div class="answer-content">
+            ${html}
+        </div>
+    `;
+
+}
+
+
+
+/* =========================
+   SUBMIT TASK
+========================= */
+
+async function submitTask() {
+
+
+    const input =
+        document
+        .getElementById("inputText")
+        .value
+        .trim();
+
+
+    const result =
+        document.getElementById("result");
+
+
+    if (input === "") {
+
+        result.innerHTML = `
+            <div class="answer-content">
+                ⚠️ Please enter something first.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /* Stop any previous speech */
+
+    stopReading();
+
+
+    result.innerHTML = `
+        <div class="answer-content">
+            ⏳ EduGenie is thinking...
+        </div>
+    `;
+
+
+    const endpoints = {
+
+        qa: "/qa",
+
+        explain: "/explain",
+
+        quiz: "/quiz",
+
+        summarize: "/summarize",
+
+        learn: "/learn/recommendations"
+
+    };
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "question",
+        input
+    );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+
+                endpoints[currentTask],
+
+                {
+                    method: "POST",
+                    body: formData
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+
+        /* =========================
+           QUIZ
+        ========================= */
+
+        if (
+            currentTask === "quiz" &&
+            Array.isArray(data.answer)
+        ) {
+
+
+            let html =
+                '<div class="answer-content">';
+
+
+            html += `
+                <h3 class="quiz-title">
+                    📝 Your Quiz
+                </h3>
+            `;
+
+
+            data.answer.forEach(
+                function(q, index) {
+
+
+                    html += `
+
+                        <div class="quiz-card">
+
+                            <div class="quiz-question">
+
+                                ${index + 1}. ${q.question}
+
+                            </div>
+
+
+                            <div class="quiz-option">
+
+                                <span class="option-letter">
+                                    A.
+                                </span>
+
+                                ${q.options[0]}
+
+                            </div>
+
+
+                            <div class="quiz-option">
+
+                                <span class="option-letter">
+                                    B.
+                                </span>
+
+                                ${q.options[1]}
+
+                            </div>
+
+
+                            <div class="quiz-option">
+
+                                <span class="option-letter">
+                                    C.
+                                </span>
+
+                                ${q.options[2]}
+
+                            </div>
+
+
+                            <div class="quiz-option">
+
+                                <span class="option-letter">
+                                    D.
+                                </span>
+
+                                ${q.options[3]}
+
+                            </div>
+
+
+                            <div class="quiz-answer">
+
+                                ✅ Answer: ${q.answer}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+            html += "</div>";
+
+
+            result.innerHTML =
+                html;
+
+        }
+
+
+        /* =========================
+           NORMAL ANSWERS
+        ========================= */
+
+        else {
+
+            result.innerHTML =
+                formatAnswer(data.answer);
+
+        }
+
+    }
+
+
+    catch (error) {
+
+        result.innerHTML = `
+
+            <div class="answer-content">
+
+                ❌ Something went wrong.
+                Please try again.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================
+   VOICE INPUT
+========================= */
+
+function startVoice() {
+
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Voice input is not supported in this browser. Try Google Chrome."
+        );
+
+        return;
+
+    }
+
+
+    const recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "en-IN";
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.continuous =
+        false;
+
+
+    const voiceBtn =
+        document.getElementById("voiceBtn");
+
+
+    recognition.onstart =
+        function() {
+
+            voiceBtn
+                .classList
+                .add("listening");
+
+
+            voiceBtn.innerHTML =
+                "🔴";
+
+        };
+
+
+    recognition.onresult =
+        function(event) {
+
+
+            const text =
+                event
+                .results[0][0]
+                .transcript;
+
+
+            document
+                .getElementById("inputText")
+                .value = text;
+
+        };
+
+
+    recognition.onerror =
+        function() {
+
+            alert(
+                "Sorry, I couldn't hear you. Please try again."
+            );
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            voiceBtn
+                .classList
+                .remove("listening");
+
+
+            voiceBtn.innerHTML =
+                "🎤";
+
+        };
+
+
+    recognition.start();
+
+}
+
+
+
+/* =========================
+   READ ALOUD
+========================= */
+
+function readAnswer() {
+
+
+    let text =
+        document
+        .getElementById("result")
+        .innerText;
+
+
+    if (
+        !text ||
+        text ===
+        "Your personalized answer will appear here."
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * CLEAN TEXT BEFORE SPEAKING
+     *
+     * This removes:
+     * # headings
+     * * bold/italic symbols
+     * _ formatting
+     * backticks
+     * bullet symbols
+     * numbered-list symbols
+     */
+
+    text = text
+
+        .replace(/#{1,6}/g, "")
+
+        .replace(/[*_`~]/g, "")
+
+        .replace(/^\s*[-•]\s*/gm, "")
+
+        .replace(/^\s*\d+[\.\)]\s*/gm, "")
+
+        .replace(/\s+/g, " ")
+
+        .trim();
+
+
+    window
+        .speechSynthesis
+        .cancel();
+
+
+    const speech =
+        new SpeechSynthesisUtterance(text);
+
+
+    speech.lang =
+        "en-IN";
+
+
+    speech.rate =
+        0.9;
+
+
+    window
+        .speechSynthesis
+        .speak(speech);
+
+}
+
+
+
+/* =========================
+   STOP READING
+========================= */
+
+function stopReading() {
+
+    window
+        .speechSynthesis
+        .cancel();
+
+}
+
+</script>
+
+
+</body>
+
+</html>
