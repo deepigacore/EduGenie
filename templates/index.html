@@ -2,302 +2,796 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>EduGenie | AI Learning Assistant</title>
 
-    <link rel="stylesheet" href="/static/style.css">
-
     <style>
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #eef2ff, #f8faff);
-            color: #1f2937;
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            color: #17172b;
+
+            background:
+                radial-gradient(circle at 10% 10%, rgba(124, 92, 255, .25), transparent 28%),
+                radial-gradient(circle at 90% 15%, rgba(255, 93, 177, .22), transparent 25%),
+                radial-gradient(circle at 50% 100%, rgba(71, 170, 255, .20), transparent 30%),
+                linear-gradient(135deg, #f7f5ff, #eef5ff 50%, #fff3fa);
+
+            transition: .3s;
         }
 
-        .container {
-            width: 92%;
-            max-width: 1100px;
-            margin: auto;
-            padding: 35px 0;
+        body.dark {
+            color: #f5f5ff;
+
+            background:
+                radial-gradient(circle at 10% 10%, rgba(124, 92, 255, .25), transparent 25%),
+                radial-gradient(circle at 90% 15%, rgba(255, 93, 177, .16), transparent 25%),
+                #090914;
         }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 30px;
+        button,
+        textarea {
+            font-family: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            width: min(1180px, 92%);
+            margin: 20px auto;
+            padding: 15px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border: 1px solid rgba(255,255,255,.45);
+            border-radius: 20px;
+
+            background: rgba(255,255,255,.55);
+            backdrop-filter: blur(20px);
+
+            box-shadow: 0 15px 40px rgba(60,40,120,.10);
+        }
+
+        body.dark nav {
+            background: rgba(25,25,45,.65);
+            border-color: rgba(255,255,255,.08);
         }
 
         .logo {
-            font-size: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            color: white;
+            font-size: 21px;
+
+            background: linear-gradient(135deg,#6d5dfc,#e84ca8);
+
+            box-shadow: 0 8px 25px rgba(110,90,255,.35);
+        }
+
+        .logo span {
+            background: linear-gradient(90deg,#6254ef,#d947a1);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .theme-btn {
+            border: none;
+            cursor: pointer;
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            font-size: 18px;
+
+            background: rgba(255,255,255,.8);
+
+            box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+            transition: .25s;
+        }
+
+        .theme-btn:hover {
+            transform: rotate(15deg) scale(1.08);
+        }
+
+        body.dark .theme-btn {
+            background: #202035;
+            color: white;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            width: min(1100px, 92%);
+            margin: 70px auto 55px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 9px 16px;
+
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            background: rgba(255,255,255,.65);
+            border: 1px solid rgba(255,255,255,.7);
+
+            box-shadow: 0 8px 25px rgba(70,50,150,.08);
+
+            animation: float 3s ease-in-out infinite;
+        }
+
+        body.dark .badge {
+            background: rgba(30,30,50,.7);
+            border-color: rgba(255,255,255,.08);
         }
 
         .hero h1 {
-            font-size: 38px;
-            margin: 5px 0;
-            color: #4f46e5;
+            margin-top: 22px;
+
+            font-size: clamp(45px, 8vw, 82px);
+            line-height: .98;
+            font-weight: 900;
+            letter-spacing: -4px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #5547ee,
+                    #8b55ff,
+                    #e44da4
+                );
+
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero h2 {
+            margin-top: 18px;
+
+            font-size: clamp(21px, 3vw, 32px);
+            font-weight: 700;
         }
 
         .hero p {
-            color: #64748b;
-            font-size: 17px;
+            max-width: 650px;
+            margin: 20px auto;
+
+            line-height: 1.7;
+            font-size: 16px;
+
+            opacity: .7;
         }
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 28px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
-        }
+        .hero-orb {
+            width: 95px;
+            height: 95px;
 
-        .task-grid {
+            margin: 35px auto 0;
+
+            border-radius: 50%;
+
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-top: 20px;
+            place-items: center;
+
+            color: white;
+            font-size: 40px;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ffffff,
+                    #a794ff 20%,
+                    #6856ef 55%,
+                    #d44ca4
+                );
+
+            box-shadow:
+                0 0 0 15px rgba(115,90,255,.07),
+                0 0 70px rgba(111,80,255,.35);
+
+            animation: orb 4s ease-in-out infinite;
         }
 
-        .task {
-            border: 2px solid #e5e7eb;
-            background: white;
-            padding: 16px 10px;
-            border-radius: 14px;
-            cursor: pointer;
+        @keyframes orb {
+
+            0%,100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-12px) scale(1.05);
+            }
+
+        }
+
+        @keyframes float {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+        }
+
+        /* ================= FEATURES ================= */
+
+        .section-title {
             text-align: center;
-            transition: 0.2s;
+            margin-bottom: 25px;
         }
 
-        .task:hover {
-            transform: translateY(-3px);
-            border-color: #6366f1;
+        .section-title h2 {
+            font-size: 27px;
         }
 
-        .task.active {
-            background: #eef2ff;
-            border-color: #4f46e5;
+        .section-title p {
+            margin-top: 7px;
+            opacity: .6;
+            font-size: 14px;
         }
 
-        .task-icon {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 7px;
+        .features {
+            width: min(1100px, 92%);
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 15px;
         }
 
-        .input-area {
+        .feature {
             position: relative;
-            margin-top: 20px;
+            overflow: hidden;
+
+            padding: 22px 16px;
+
+            border-radius: 22px;
+
+            cursor: pointer;
+
+            background: rgba(255,255,255,.58);
+            border: 1px solid rgba(255,255,255,.65);
+
+            backdrop-filter: blur(18px);
+
+            box-shadow: 0 12px 35px rgba(60,40,120,.08);
+
+            transition: .3s;
+        }
+
+        body.dark .feature {
+            background: rgba(25,25,45,.68);
+            border-color: rgba(255,255,255,.07);
+        }
+
+        .feature:hover {
+            transform: translateY(-7px);
+
+            box-shadow:
+                0 20px 45px rgba(80,60,180,.18);
+        }
+
+        .feature.active {
+            transform: translateY(-5px);
+
+            border-color: #7865ff;
+
+            box-shadow:
+                0 15px 40px rgba(100,80,255,.25);
+        }
+
+        .feature-icon {
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .feature p {
+            font-size: 12px;
+            opacity: .6;
+            line-height: 1.5;
+        }
+
+        /* ================= WORKSPACE ================= */
+
+        .workspace {
+            width: min(900px, 92%);
+            margin: 55px auto 80px;
+
+            padding: 30px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.68);
+            border: 1px solid rgba(255,255,255,.8);
+
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 25px 70px rgba(60,40,130,.12);
+        }
+
+        body.dark .workspace {
+            background: rgba(22,22,39,.82);
+            border-color: rgba(255,255,255,.07);
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .workspace-header h2 {
+            font-size: 23px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            font-size: 12px;
+            opacity: .65;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #31c48d;
+
+            box-shadow: 0 0 12px #31c48d;
         }
 
         textarea {
             width: 100%;
             min-height: 150px;
+
             resize: vertical;
-            padding: 18px;
-            padding-right: 65px;
-            border: 2px solid #e5e7eb;
-            border-radius: 15px;
-            font-size: 16px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(120,100,220,.15);
+            border-radius: 20px;
+
             outline: none;
+
+            font-size: 15px;
+            line-height: 1.6;
+
+            color: inherit;
+            background: rgba(255,255,255,.7);
+
+            transition: .25s;
+        }
+
+        body.dark textarea {
+            background: rgba(10,10,25,.65);
+            border-color: rgba(255,255,255,.08);
         }
 
         textarea:focus {
-            border-color: #6366f1;
+            border-color: #7664ff;
+
+            box-shadow:
+                0 0 0 4px rgba(118,100,255,.1);
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin-top: 13px;
+        }
+
+        .suggestion {
+            border: none;
+            cursor: pointer;
+
+            padding: 8px 13px;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+
+            background: rgba(120,100,255,.09);
+            color: inherit;
+
+            transition: .2s;
+        }
+
+        .suggestion:hover {
+            background: rgba(120,100,255,.18);
+            transform: translateY(-2px);
+        }.actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .voice-btn,
+        .submit-btn {
+            border: none;
+            cursor: pointer;
+
+            min-height: 48px;
+
+            border-radius: 15px;
+
+            font-weight: 700;
+
+            transition: .25s;
         }
 
         .voice-btn {
-            position: absolute;
-            right: 12px;
-            bottom: 12px;
-            width: 44px;
-            height: 44px;
-            border: none;
-            border-radius: 50%;
-            background: #4f46e5;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
+            width: 50px;
+
+            font-size: 19px;
+
+            background: rgba(110,90,255,.1);
+            color: inherit;
         }
 
-        .voice-btn.listening {
-            background: #dc2626;
+        .voice-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .submit-btn {
+            flex: 1;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #6254ef,
+                    #9556f7,
+                    #e44ba5
+                );
+
+            box-shadow:
+                0 10px 25px rgba(100,75,240,.25);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 15px 35px rgba(100,75,240,.35);
+        }
+
+        .submit-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================= LISTENING ================= */
+
+        .listening {
+            display: none;
+
+            margin-top: 12px;
+            padding: 10px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            background: rgba(230,70,130,.08);
+        }
+
+        .listening.show {
+            display: block;
             animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
+
             50% {
-                transform: scale(1.1);
+                opacity: .45;
             }
+
         }
 
-        .submit-btn {
-            width: 100%;
-            margin-top: 15px;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: #4f46e5;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        /* ================= LOADING ================= */
 
-        .submit-btn:hover {
-            background: #4338ca;
-        }
+        .loading {
+            display: none;
 
-        .examples {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .example {
-            background: #f1f5f9;
-            border: none;
-            border-radius: 20px;
-            padding: 9px 14px;
-            cursor: pointer;
-        }
-
-        /* RESPONSE */
-
-        .result {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 22px;
-            line-height: 1.8;
-            min-height: 80px;
-        }
-
-        .answer-content h3 {
-            color: #4f46e5;
-            margin-top: 0;
-        }
-
-        .answer-content h4 {
-            color: #374151;
-            margin-bottom: 8px;
-        }
-
-        .answer-content .point {
-            background: white;
-            padding: 12px 15px;
-            margin: 8px 0;
-            border-radius: 10px;
-            border-left: 4px solid #6366f1;
-        }
-
-        /* QUIZ */
-
-        .quiz-title {
-            color: #4f46e5;
-            margin-top: 0;
-        }
-
-        .quiz-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 18px 0;
-        }
-
-        .quiz-question {
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .quiz-option {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 11px 14px;
-            margin: 8px 0;
-            color: #334155;
-        }
-
-        .option-letter {
-            font-weight: bold;
-            margin-right: 8px;
-            color: #4f46e5;
-        }
-
-        .quiz-answer {
-            margin-top: 14px;
-            padding: 12px;
-            border-radius: 10px;
-            background: #ecfdf5;
-            color: #166534;
-            font-weight: bold;
-        }
-
-        /* SPEECH BUTTONS */
-
-        .result-actions {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .speak-btn {
-            padding: 9px 15px;
-            border: none;
-            border-radius: 8px;
-            background: #e0e7ff;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .speak-btn:hover {
-            background: #c7d2fe;
-        }
-
-        .stop-btn {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .stop-btn:hover {
-            background: #fecaca;
-        }
-
-        .footer {
             text-align: center;
-            color: #94a3b8;
-            margin-top: 25px;
+
+            padding: 25px;
         }
 
-        @media (max-width: 800px) {
+        .loading.show {
+            display: block;
+        }
 
-            .task-grid {
-                grid-template-columns: repeat(2, 1fr);
+        .spinner {
+            width: 35px;
+            height: 35px;
+
+            margin: auto;
+
+            border: 4px solid rgba(110,90,255,.15);
+
+            border-top-color: #6d5dfc;
+
+            border-radius: 50%;
+
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        .thinking {
+            margin-top: 10px;
+
+            font-size: 13px;
+
+            opacity: .65;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result-card {
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 22px;
+
+            background: rgba(110,90,255,.06);
+
+            border: 1px solid rgba(110,90,255,.12);
+
+            animation: appear .4s ease;
+        }
+
+        .result-card.show {
+            display: block;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        .result-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .ai-label {
+            font-weight: 800;
+
+            font-size: 14px;
+        }
+
+        .read-actions {
+            display: flex;
+
+            gap: 7px;
+        }
+
+        .read-btn {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 7px 10px;
+
+            border-radius: 9px;
+
+            background: rgba(110,90,255,.1);
+
+            color: inherit;
+
+            font-size: 12px;
+        }
+
+        .result-content {
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+        .result-content p {
+            margin-bottom: 10px;
+        }
+
+        .result-content h3 {
+            margin: 16px 0 8px;
+        }
+
+        .point {
+            display: flex;
+
+            gap: 10px;
+
+            margin: 9px 0;
+        }
+
+        .point strong {
+            color: #6857ef;
+        }
+
+        /* ================= FEEDBACK ================= */
+
+        .feedback {
+            margin-top: 20px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(100,80,180,.1);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            font-size: 12px;
+
+            opacity: .7;
+        }
+
+        .feedback-buttons {
+            display: flex;
+
+            gap: 7px;
+        }
+
+        .feedback button {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 7px 10px;
+
+            border-radius: 9px;
+
+            background: rgba(110,90,255,.08);
+
+            color: inherit;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+
+            padding: 30px;
+
+            font-size: 12px;
+
+            opacity: .55;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:850px) {
+
+            .features {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .feature:last-child {
+                grid-column: span 2;
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            nav {
+                margin-top: 10px;
+            }
+
+            .hero {
+                margin-top: 50px;
             }
 
             .hero h1 {
-                font-size: 30px;
+                letter-spacing: -2px;
             }
 
-        }
-
-        @media (max-width: 500px) {
-
-            .task-grid {
+            .features {
                 grid-template-columns: 1fr;
             }
 
-            .container {
-                width: 94%;
+            .feature:last-child {
+                grid-column: auto;
+            }
+
+            .workspace {
+                padding: 20px;
+            }
+
+            .feedback {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
             }
 
         }
@@ -309,457 +803,375 @@
 
 <body>
 
-<div class="container">
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ✦
+            </div>
+
+            <span>EduGenie</span>
+
+        </div>
+
+        <button
+            class="theme-btn"
+            id="themeBtn"
+            onclick="toggleTheme()"
+            title="Toggle theme">
+
+            🌙
+
+        </button>
+
+    </nav>
 
 
-    <!-- HERO -->
+    <!-- ================= HERO ================= -->
 
-    <div class="hero">
+    <section class="hero">
 
-        <div class="logo">🧠✨</div>
+        <div class="badge">
+            ✨ AI-Powered Learning Assistant
+        </div>
 
-        <h1>EduGenie</h1>
+        <h1>
+            Learn Smarter.
+        </h1>
 
-        <p>Your smart AI learning companion</p>
+        <h2>
+            Understand Faster. 🚀
+        </h2>
+
+        <p>
+            Ask questions, simplify difficult concepts,
+            practice with quizzes, summarize study material,
+            and build your personalized learning path —
+            all in one place.
+        </p>
+
+        <div class="hero-orb">
+            ✦
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <div class="section-title">
+
+        <h2>
+            What do you want to learn?
+        </h2>
+
+        <p>
+            Choose a learning mode and let EduGenie help you.
+        </p>
 
     </div>
 
 
+    <section class="features">
 
-    <!-- MAIN CARD -->
+        <div
+            class="feature active"
+            data-task="qa">
 
-    <div class="card">
+            <div class="feature-icon">
+                💬
+            </div>
 
-        <h2>👋 What do you want to learn?</h2>
-
-        <p>Choose a learning mode and let EduGenie help you.</p>
-
-
-        <div class="task-grid">
-
-
-            <div class="task active"
-                 onclick="selectTask('qa', this)">
-
-                <span class="task-icon">💬</span>
-
+            <h3>
                 Ask
+            </h3>
 
-            </div>
-
-
-            <div class="task"
-                 onclick="selectTask('explain', this)">
-
-                <span class="task-icon">🧠</span>
-
-                Explain
-
-            </div>
-
-
-            <div class="task"
-                 onclick="selectTask('quiz', this)">
-
-                <span class="task-icon">📝</span>
-
-                Quiz
-
-            </div>
-
-
-            <div class="task"
-                 onclick="selectTask('summarize', this)">
-
-                <span class="task-icon">📚</span>
-
-                Summarize
-
-            </div>
-
-
-            <div class="task"
-                 onclick="selectTask('learn', this)">
-
-                <span class="task-icon">🚀</span>
-
-                Learning Path
-
-            </div>
-
+            <p>
+                Get clear answers to your questions.
+            </p>
 
         </div>
 
 
+        <div
+            class="feature"
+            data-task="explain">
 
-        <!-- INPUT -->
+            <div class="feature-icon">
+                💡
+            </div>
 
-        <div class="input-area">
+            <h3>
+                Explain
+            </h3>
 
-            <textarea
-                id="inputText"
-                placeholder="Ask me anything..."></textarea>
+            <p>
+                Make difficult concepts simple.
+            </p>
 
+        </div>
+
+
+        <div
+            class="feature"
+            data-task="quiz">
+
+            <div class="feature-icon">
+                🎯
+            </div>
+
+            <h3>
+                Quiz
+            </h3>
+
+            <p>
+                Test your knowledge and practice.
+            </p>
+
+        </div>
+
+
+        <div
+            class="feature"
+            data-task="summarize">
+
+            <div class="feature-icon">
+                📝
+            </div>
+
+            <h3>
+                Summarize
+            </h3>
+
+            <p>
+                Turn long content into quick notes.
+            </p>
+
+        </div>
+
+
+        <div
+            class="feature"
+            data-task="learn">
+
+            <div class="feature-icon">
+                🚀
+            </div>
+
+            <h3>
+                Learning Path
+            </h3>
+
+            <p>
+                Discover what to learn next.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= WORKSPACE ================= -->
+
+    <section class="workspace">
+
+        <div class="workspace-header">
+
+            <div>
+
+                <h2 id="taskTitle">
+                    Ask EduGenie
+                </h2>
+
+            </div>
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                AI Online
+
+            </div>
+
+        </div>
+
+
+        <textarea
+            id="question"
+            placeholder="Ask me anything about your studies..."></textarea>
+
+
+        <!-- QUICK SUGGESTIONS -->
+
+        <div class="suggestions">
+
+            <button
+                class="suggestion"
+                onclick="setExample('Explain binary search in simple words')">
+
+                🌳 Explain Binary Search
+
+            </button>
+
+            <button
+                class="suggestion"
+                onclick="setExample('Quiz me on DBMS')">
+
+                🎯 Quiz me on DBMS
+
+            </button>
+
+            <button
+                class="suggestion"
+                onclick="setExample('Explain OOP concepts for a beginner')">
+
+                💻 OOP Basics
+
+            </button>
+
+            <button
+                class="suggestion"
+                onclick="setExample('Create a learning path for Python')">
+
+                🚀 Learn Python
+
+            </button>
+
+        </div>
+
+
+        <!-- VOICE -->
+
+        <div
+            class="listening"
+            id="listening">
+
+            🔴 Listening... Speak now
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
 
             <button
                 class="voice-btn"
                 id="voiceBtn"
                 onclick="startVoice()"
-                title="Speak">
+                title="Voice input">
 
                 🎤
 
             </button>
 
-        </div>
-
-
-
-        <!-- EXAMPLES -->
-
-        <div class="examples">
-
             <button
-                class="example"
-                onclick="setExample('Explain Python in simple words')">
+                class="submit-btn"
+                id="submitBtn"
+                onclick="submitTask()">
 
-                💡 Explain Python
-
-            </button>
-
-
-            <button
-                class="example"
-                onclick="setExample('What is an algorithm?')">
-
-                💡 What is an algorithm?
-
-            </button>
-
-
-            <button
-                class="example"
-                onclick="setExample('Create a quiz about Data Structures')">
-
-                💡 Data Structures Quiz
+                ✨ Ask EduGenie
 
             </button>
 
         </div>
 
 
-
-        <!-- SUBMIT -->
-
-        <button
-            class="submit-btn"
-            onclick="submitTask()">
-
-            ✨ Ask EduGenie
-
-        </button>
-
-    </div>
-
-
-
-    <!-- RESPONSE CARD -->
-
-    <div class="card">
-
-        <h2>🤖 EduGenie Response</h2>
-
+        <!-- LOADING -->
 
         <div
-            class="result"
-            id="result">
+            class="loading"
+            id="loading">
 
-            <div class="answer-content">
+            <div class="spinner"></div>
 
-                Your personalized answer will appear here.
-
+            <div class="thinking">
+                EduGenie is thinking...
             </div>
 
         </div>
 
 
-        <!-- SPEECH CONTROLS -->
+        <!-- RESULT -->
 
-        <div class="result-actions">
+        <div
+            class="result-card"
+            id="resultCard">
 
-            <button
-                class="speak-btn"
-                onclick="readAnswer()">
+            <div class="result-top">
 
-                🔊 Read Aloud
-
-            </button>
-
-
-            <button
-                class="speak-btn stop-btn"
-                onclick="stopReading()">
-
-                ⏹️ Stop
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- FOOTER -->
-
-    <div class="footer">
-
-        Made for students with ❤️ using AI
-
-    </div>
-
-
-</div>
-
-
-
-<script>
-
-
-/* =========================
-   CURRENT TASK
-========================= */
-
-let currentTask = "qa";
-
-
-
-/* =========================
-   SELECT TASK
-========================= */
-
-function selectTask(task, element) {
-
-    currentTask = task;
-
-
-    document
-        .querySelectorAll(".task")
-        .forEach(function(item) {
-
-            item.classList.remove("active");
-
-        });
-
-
-    element.classList.add("active");
-
-
-    const textarea =
-        document.getElementById("inputText");
-
-
-    const placeholders = {
-
-        qa: "Ask me anything...",
-
-        explain:
-            "Enter a topic you want explained simply...",
-
-        quiz:
-            "Enter a topic for your quiz...",
-
-        summarize:
-            "Paste the text you want summarized...",
-
-        learn:
-            "What do you want to learn?"
-
-    };
-
-
-    textarea.placeholder =
-        placeholders[task];
-
-}
-
-
-
-/* =========================
-   EXAMPLE BUTTON
-========================= */
-
-function setExample(text) {
-
-    document
-        .getElementById("inputText")
-        .value = text;
-
-}
-
-
-
-/* =========================
-   FORMAT ANSWER
-========================= */
-
-function formatAnswer(text) {
-
-    if (!text) {
-
-        return "No answer received.";
-
-    }
-
-
-    let lines =
-        String(text)
-        .split("\n")
-        .map(line => line.trim())
-        .filter(line => line !== "");
-
-
-    let html = "";
-
-
-    lines.forEach(function(line) {
-
-
-        /*
-         * HEADINGS
-         *
-         * Removes # symbols completely.
-         */
-
-        if (/^#{1,6}\s*/.test(line)) {
-
-            const heading =
-                line
-                .replace(/^#{1,6}\s*/, "")
-                .trim();
-
-
-            html += `
-                <h3>${heading}</h3>
-            `;
-
-        }
-
-
-        /*
-         * NUMBERED POINTS
-         */
-
-        else if (/^\d+[\.\)]\s*/.test(line)) {
-
-            const match =
-                line.match(/^(\d+)[\.\)]\s*(.*)$/);
-
-
-            const number =
-                match[1];
-
-            const content =
-                match[2];
-
-
-            html += `
-                <div class="point">
-                    <strong>${number}.</strong>
-                    ${content}
+                <div class="ai-label">
+                    ✨ EduGenie Response
                 </div>
-            `;
 
-        }
+                <div class="read-actions">
 
+                    <button
+                        class="read-btn"
+                        onclick="readAnswer()">
 
-        /*
-         * BULLET POINTS
-         */
+                        🔊 Read
 
-        else if (/^[-*•]\s*/.test(line)) {
+                    </button>
 
-            const content =
-                line
-                .replace(/^[-*•]\s*/, "")
-                .trim();
+                    <button
+                        class="read-btn"
+                        onclick="stopReading()">
 
+                        ⏹ Stop
 
-            html += `
-                <div class="point">
-                    • ${content}
+                    </button>
+
                 </div>
-            `;
 
-        }
-
-
-        /*
-         * NORMAL TEXT
-         */
-
-        else {
-
-            html += `
-                <p>${line}</p>
-            `;
-
-        }
-
-    });
-
-
-    return `
-        <div class="answer-content">
-            ${html}
-        </div>
-    `;
-
-}
-
-
-
-/* =========================
-   SUBMIT TASK
-========================= */
-
-async function submitTask() {
-
-
-    const input =
-        document
-        .getElementById("inputText")
-        .value
-        .trim();
-
-
-    const result =
-        document.getElementById("result");
-
-
-    if (input === "") {
-
-        result.innerHTML = `
-            <div class="answer-content">
-                ⚠️ Please enter something first.
             </div>
-        `;
-
-        return;
-
-    }
 
 
-    /* Stop any previous speech */
+            <div
+                class="result-content"
+                id="result">
 
-    stopReading();
+            </div>
 
 
-    result.innerHTML = `
-        <div class="answer-content">
-            ⏳ EduGenie is thinking...
+            <div class="feedback">
+
+                <span>
+                    Was this helpful?
+                </span>
+
+                <div class="feedback-buttons">
+
+                    <button onclick="showFeedback('Thanks! 💜')">
+                        👍
+                    </button>
+
+                    <button onclick="showFeedback('We will improve it! ✨')">
+                        👎
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
-    `;
+
+    </section>
+
+
+    <footer>
+
+        Made with 💜 and AI · EduGenie
+
+    </footer><script>
+
+    /* ================= CONFIG ================= */
+
+    let currentTask = "qa";
 
 
     const endpoints = {
@@ -777,122 +1189,397 @@ async function submitTask() {
     };
 
 
-    const formData =
-        new FormData();
+    const taskInfo = {
+
+        qa: {
+
+            title: "Ask EduGenie",
+
+            placeholder:
+                "Ask me anything about your studies..."
+
+        },
+
+        explain: {
+
+            title: "Explain Simply",
+
+            placeholder:
+                "What concept should I explain?"
+
+        },
+
+        quiz: {
+
+            title: "Test Your Knowledge",
+
+            placeholder:
+                "Enter a topic you want to be quizzed on..."
+
+        },
+
+        summarize: {
+
+            title: "Summarize Your Notes",
+
+            placeholder:
+                "Paste the text you want me to summarize..."
+
+        },
+
+        learn: {
+
+            title: "Build Your Learning Path",
+
+            placeholder:
+                "What subject or skill do you want to learn?"
+
+        }
+
+    };
 
 
-    formData.append(
-        "question",
-        input
-    );
+    /* ================= ELEMENTS ================= */
+
+    const features =
+        document.querySelectorAll(".feature");
+
+    const question =
+        document.getElementById("question");
+
+    const taskTitle =
+        document.getElementById("taskTitle");
+
+    const result =
+        document.getElementById("result");
+
+    const resultCard =
+        document.getElementById("resultCard");
+
+    const loading =
+        document.getElementById("loading");
+
+    const submitBtn =
+        document.getElementById("submitBtn");
+
+    const listening =
+        document.getElementById("listening");
 
 
-    try {
+    /* ================= FEATURE SWITCHING ================= */
+
+    features.forEach(feature => {
+
+        feature.addEventListener("click", () => {
+
+            features.forEach(item => {
+
+                item.classList.remove("active");
+
+            });
+
+            feature.classList.add("active");
+
+            currentTask =
+                feature.dataset.task;
+
+            taskTitle.textContent =
+                taskInfo[currentTask].title;
+
+            question.placeholder =
+                taskInfo[currentTask].placeholder;
+
+            submitBtn.textContent =
+                currentTask === "quiz"
+                    ? "🎯 Start Quiz"
+                    : "✨ Ask EduGenie";
+
+            question.focus();
+
+        });
+
+    });
 
 
-        const response =
-            await fetch(
+    /* ================= EXAMPLES ================= */
 
-                endpoints[currentTask],
+    function setExample(text) {
 
-                {
-                    method: "POST",
-                    body: formData
-                }
+        question.value = text;
 
-            );
+        question.focus();
+
+    }
 
 
-        const data =
-            await response.json();
+    /* ================= FORMAT ANSWER ================= */
+
+    function formatAnswer(text) {
+
+        let cleanText = String(text);
 
 
+        /*
+         * Try to detect quiz JSON.
+         */
 
-        /* =========================
-           QUIZ
-        ========================= */
+        try {
 
-        if (
-            currentTask === "quiz" &&
-            Array.isArray(data.answer)
-        ) {
+            const parsed =
+                JSON.parse(cleanText);
 
 
-            let html =
-                '<div class="answer-content">';
+            if (Array.isArray(parsed)) {
+
+                return formatQuiz(parsed);
+
+            }
+
+
+            if (
+                parsed.questions &&
+                Array.isArray(parsed.questions)
+            ) {
+
+                return formatQuiz(
+                    parsed.questions
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            /* Normal text response */
+
+        }
+
+
+        const lines =
+            cleanText.split("\n");
+
+        let html = "";
+
+
+        lines.forEach(line => {
+
+            line = line.trim();
+
+
+            if (!line) {
+
+                return;
+
+            }
+
+
+            /* HEADINGS */
+
+            if (/^#{1,6}\s*/.test(line)) {
+
+                const heading =
+                    line.replace(
+                        /^#{1,6}\s*/,
+                        ""
+                    );
+
+
+                html += `
+                    <h3>
+                        ${escapeHTML(heading)}
+                    </h3>
+                `;
+
+            }
+
+
+            /* NUMBERED POINTS */
+
+            else if (
+                /^\d+[\.\)]\s*/.test(line)
+            ) {
+
+                const match =
+                    line.match(
+                        /^(\d+)[\.\)]\s*(.*)$/
+                    );
+
+
+                html += `
+                    <div class="point">
+
+                        <strong>
+                            ${match[1]}.
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(match[2])}
+                        </span>
+
+                    </div>
+                `;
+
+            }
+
+
+            /* BULLET POINTS */
+
+            else if (
+                /^[-*•]\s*/.test(line)
+            ) {
+
+                const content =
+                    line.replace(
+                        /^[-*•]\s*/,
+                        ""
+                    );
+
+
+                html += `
+                    <div class="point">
+
+                        <strong>
+                            •
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(content)}
+                        </span>
+
+                    </div>
+                `;
+
+            }
+
+
+            /* NORMAL TEXT */
+
+            else {
+
+                html += `
+                    <p>
+                        ${escapeHTML(line)}
+                    </p>
+                `;
+
+            }
+
+        });
+
+
+        return html;
+
+    }
+
+
+    /* ================= QUIZ FORMAT ================= */
+
+    function formatQuiz(questions) {
+
+        let html = `
+
+            <div class="quiz-header">
+
+                <h3>
+                    🎯 Your Quiz
+                </h3>
+
+                <p>
+                    Choose the best answer for each question.
+                </p>
+
+            </div>
+
+        `;
+
+
+        questions.forEach((q, index) => {
+
+            const questionText =
+                q.question ||
+                q.question_text ||
+                q.text ||
+                "Question";
+
+
+            const options =
+                q.options ||
+                q.choices ||
+                [];
 
 
             html += `
-                <h3 class="quiz-title">
-                    📝 Your Quiz
-                </h3>
+
+                <div
+                    class="quiz-question"
+                    style="
+                        margin-top:20px;
+                        padding:18px;
+                        border-radius:16px;
+                        background:rgba(110,90,255,.06);
+                    "
+                >
+
+                    <strong>
+
+                        ${index + 1}.
+                        ${escapeHTML(questionText)}
+
+                    </strong>
+
             `;
 
 
-            data.answer.forEach(
-                function(q, index) {
+            options.forEach(
+                (option, optionIndex) => {
+
+                    let label = option;
+
+
+                    if (
+                        typeof option === "object"
+                    ) {
+
+                        label =
+                            option.text ||
+                            option.label ||
+                            option.option ||
+                            option.answer ||
+                            "";
+
+                    }
 
 
                     html += `
 
-                        <div class="quiz-card">
+                        <div
+                            class="quiz-option"
+                            style="
+                                margin-top:10px;
+                                padding:12px 14px;
+                                border-radius:12px;
+                                background:rgba(255,255,255,.65);
+                                cursor:pointer;
+                                transition:.2s;
+                            "
 
-                            <div class="quiz-question">
+                            onclick="
+                                selectQuizOption(this)
+                            "
+                        >
 
-                                ${index + 1}. ${q.question}
+                            <strong>
 
-                            </div>
+                                ${String.fromCharCode(
+                                    65 + optionIndex
+                                )}.
 
+                            </strong>
 
-                            <div class="quiz-option">
-
-                                <span class="option-letter">
-                                    A.
-                                </span>
-
-                                ${q.options[0]}
-
-                            </div>
-
-
-                            <div class="quiz-option">
-
-                                <span class="option-letter">
-                                    B.
-                                </span>
-
-                                ${q.options[1]}
-
-                            </div>
-
-
-                            <div class="quiz-option">
-
-                                <span class="option-letter">
-                                    C.
-                                </span>
-
-                                ${q.options[2]}
-
-                            </div>
-
-
-                            <div class="quiz-option">
-
-                                <span class="option-letter">
-                                    D.
-                                </span>
-
-                                ${q.options[3]}
-
-                            </div>
-
-
-                            <div class="quiz-answer">
-
-                                ✅ Answer: ${q.answer}
-
-                            </div>
+                            ${escapeHTML(
+                                String(label)
+                            )}
 
                         </div>
 
@@ -902,239 +1589,442 @@ async function submitTask() {
             );
 
 
-            html += "</div>";
+            html += `
+
+                </div>
+
+            `;
+
+        });
 
 
-            result.innerHTML =
-                html;
+        return html;
+
+    }
+
+
+    /* ================= QUIZ SELECTION ================= */
+
+    function selectQuizOption(element) {
+
+        const parent =
+            element.parentElement;
+
+
+        parent
+            .querySelectorAll(".quiz-option")
+            .forEach(option => {
+
+                option.style.background =
+                    "rgba(110,90,255,.06)";
+
+                option.style.border =
+                    "1px solid transparent";
+
+            });
+
+
+        element.style.background =
+            "rgba(110,90,255,.18)";
+
+        element.style.border =
+            "1px solid rgba(110,90,255,.35)";
+
+    }
+
+
+    /* ================= HTML SECURITY ================= */
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+
+        div.textContent =
+            text;
+
+
+        return div.innerHTML;
+
+    }
+
+
+    /* ================= SUBMIT ================= */
+
+    async function submitTask() {
+
+        const text =
+            question.value.trim();
+
+
+        if (!text) {
+
+            question.focus();
+
+            return;
 
         }
 
 
-        /* =========================
-           NORMAL ANSWERS
-        ========================= */
+        stopReading();
 
-        else {
+
+        resultCard.classList.remove(
+            "show"
+        );
+
+
+        loading.classList.add(
+            "show"
+        );
+
+
+        submitBtn.disabled =
+            true;
+
+
+        try {
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "question",
+                text
+            );
+
+
+            const response =
+                await fetch(
+                    endpoints[currentTask],
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
 
             result.innerHTML =
-                formatAnswer(data.answer);
+                formatAnswer(
+                    data.answer ||
+                    "No response received."
+                );
+
+
+            resultCard.classList.add(
+                "show"
+            );
+
+
+            setTimeout(() => {
+
+                resultCard.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "nearest"
+
+                });
+
+            }, 100);
+
+        }
+
+
+        catch (error) {
+
+            result.innerHTML = `
+
+                <p>
+
+                    Something went wrong.
+
+                    Please check that the
+                    EduGenie server is running
+                    and try again.
+
+                </p>
+
+            `;
+
+
+            resultCard.classList.add(
+                "show"
+            );
+
+        }
+
+
+        finally {
+
+            loading.classList.remove(
+                "show"
+            );
+
+
+            submitBtn.disabled =
+                false;
 
         }
 
     }
 
 
-    catch (error) {
+    /* ================= CTRL + ENTER ================= */
 
-        result.innerHTML = `
+    question.addEventListener(
+        "keydown",
+        event => {
 
-            <div class="answer-content">
+            if (
+                event.key === "Enter" &&
+                (event.ctrlKey ||
+                 event.metaKey)
+            ) {
 
-                ❌ Something went wrong.
-                Please try again.
+                submitTask();
 
-            </div>
+            }
 
-        `;
-
-    }
-
-}
+        }
+    );
 
 
-
-/* =========================
-   VOICE INPUT
-========================= */
-
-function startVoice() {
-
+    /* ================= VOICE INPUT ================= */
 
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
 
-    if (!SpeechRecognition) {
-
-        alert(
-            "Voice input is not supported in this browser. Try Google Chrome."
-        );
-
-        return;
-
-    }
+    let recognition;
 
 
-    const recognition =
-        new SpeechRecognition();
+    if (SpeechRecognition) {
+
+        recognition =
+            new SpeechRecognition();
 
 
-    recognition.lang =
-        "en-IN";
+        recognition.lang =
+            "en-IN";
 
 
-    recognition.interimResults =
-        false;
+        recognition.interimResults =
+            false;
 
 
-    recognition.continuous =
-        false;
+        recognition.continuous =
+            false;
 
 
-    const voiceBtn =
-        document.getElementById("voiceBtn");
+        recognition.onstart = () => {
 
-
-    recognition.onstart =
-        function() {
-
-            voiceBtn
-                .classList
-                .add("listening");
-
-
-            voiceBtn.innerHTML =
-                "🔴";
-
-        };
-
-
-    recognition.onresult =
-        function(event) {
-
-
-            const text =
-                event
-                .results[0][0]
-                .transcript;
-
-
-            document
-                .getElementById("inputText")
-                .value = text;
-
-        };
-
-
-    recognition.onerror =
-        function() {
-
-            alert(
-                "Sorry, I couldn't hear you. Please try again."
+            listening.classList.add(
+                "show"
             );
 
         };
 
 
-    recognition.onend =
-        function() {
+        recognition.onend = () => {
 
-            voiceBtn
-                .classList
-                .remove("listening");
-
-
-            voiceBtn.innerHTML =
-                "🎤";
+            listening.classList.remove(
+                "show"
+            );
 
         };
 
 
-    recognition.start();
+        recognition.onresult =
+            event => {
 
-}
-
-
-
-/* =========================
-   READ ALOUD
-========================= */
-
-function readAnswer() {
+                question.value =
+                    event
+                        .results[0][0]
+                        .transcript;
 
 
-    let text =
-        document
-        .getElementById("result")
-        .innerText;
+                question.focus();
+
+            };
 
 
-    if (
-        !text ||
-        text ===
-        "Your personalized answer will appear here."
-    ) {
+        recognition.onerror = () => {
 
-        return;
+            listening.classList.remove(
+                "show"
+            );
+
+        };
 
     }
 
 
-    /*
-     * CLEAN TEXT BEFORE SPEAKING
-     *
-     * This removes:
-     * # headings
-     * * bold/italic symbols
-     * _ formatting
-     * backticks
-     * bullet symbols
-     * numbered-list symbols
-     */
+    else {
 
-    text = text
+        document.getElementById(
+            "voiceBtn"
+        ).style.display = "none";
 
-        .replace(/#{1,6}/g, "")
-
-        .replace(/[*_`~]/g, "")
-
-        .replace(/^\s*[-•]\s*/gm, "")
-
-        .replace(/^\s*\d+[\.\)]\s*/gm, "")
-
-        .replace(/\s+/g, " ")
-
-        .trim();
+    }
 
 
-    window
-        .speechSynthesis
-        .cancel();
+    /* ================= START VOICE ================= */
+
+    function startVoice() {
+
+        if (!recognition) {
+
+            alert(
+                "Voice input is not supported in this browser."
+            );
+
+            return;
+
+        }
 
 
-    const speech =
-        new SpeechSynthesisUtterance(text);
+        stopReading();
 
 
-    speech.lang =
-        "en-IN";
+        recognition.start();
+
+    }
 
 
-    speech.rate =
-        0.9;
+    /* ================= READ ALOUD ================= */
+
+    function readAnswer() {
+
+        if (
+            !("speechSynthesis" in window)
+        ) {
+
+            return;
+
+        }
 
 
-    window
-        .speechSynthesis
-        .speak(speech);
-
-}
+        stopReading();
 
 
+        const text =
+            document.getElementById(
+                "result"
+            ).innerText;
 
-/* =========================
-   STOP READING
-========================= */
 
-function stopReading() {
+        if (!text.trim()) {
 
-    window
-        .speechSynthesis
-        .cancel();
+            return;
 
-}
+        }
+
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+
+        speech.lang =
+            "en-IN";
+
+
+        speech.rate =
+            0.95;
+
+
+        speech.pitch =
+            1;
+
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }
+
+
+    /* ================= STOP READING ================= */
+
+    function stopReading() {
+
+        if (
+            "speechSynthesis" in window
+        ) {
+
+            window.speechSynthesis.cancel();
+
+        }
+
+    }
+
+
+    /* ================= THEME ================= */
+
+    function toggleTheme() {
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+
+        const dark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        document.getElementById(
+            "themeBtn"
+        ).textContent =
+            dark ? "☀️" : "🌙";
+
+
+        localStorage.setItem(
+            "edugenie-theme",
+            dark ? "dark" : "light"
+        );
+
+    }
+
+
+    /* ================= LOAD THEME ================= */
+
+    if (
+        localStorage.getItem(
+            "edugenie-theme"
+        ) === "dark"
+    ) {
+
+        document.body.classList.add(
+            "dark"
+        );
+
+
+        document.getElementById(
+            "themeBtn"
+        ).textContent =
+            "☀️";
+
+    }
+
+
+    /* ================= FEEDBACK ================= */
+
+    function showFeedback(message) {
+
+        alert(message);
+
+    }
 
 </script>
 
