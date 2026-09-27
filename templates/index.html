@@ -3,800 +3,1137 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>EduGenie | AI Learning Assistant</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <style>
+<title>EduGenie – AI Learning Assistant</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
 
-        html {
-            scroll-behavior: smooth;
-        }
+<style>
 
-        body {
-            font-family: Inter, Arial, sans-serif;
-            min-height: 100vh;
-            color: #17172b;
+/* ================= GLOBAL ================= */
 
-            background:
-                radial-gradient(circle at 10% 10%, rgba(124, 92, 255, .25), transparent 28%),
-                radial-gradient(circle at 90% 15%, rgba(255, 93, 177, .22), transparent 25%),
-                radial-gradient(circle at 50% 100%, rgba(71, 170, 255, .20), transparent 30%),
-                linear-gradient(135deg, #f7f5ff, #eef5ff 50%, #fff3fa);
+* {
+    box-sizing: border-box;
+}
 
-            transition: .3s;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        body.dark {
-            color: #f5f5ff;
+body {
 
-            background:
-                radial-gradient(circle at 10% 10%, rgba(124, 92, 255, .25), transparent 25%),
-                radial-gradient(circle at 90% 15%, rgba(255, 93, 177, .16), transparent 25%),
-                #090914;
-        }
+    margin: 0;
 
-        button,
-        textarea {
-            font-family: inherit;
-        }
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-        /* ================= NAVBAR ================= */
+    background:
+        linear-gradient(
+            135deg,
+            #f8f7ff,
+            #eef4ff,
+            #fff8fc
+        );
 
-        nav {
-            width: min(1180px, 92%);
-            margin: 20px auto;
-            padding: 15px 20px;
+    color: #202124;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    min-height: 100vh;
 
-            border: 1px solid rgba(255,255,255,.45);
-            border-radius: 20px;
+    transition:
+        background .3s ease,
+        color .3s ease;
+}
 
-            background: rgba(255,255,255,.55);
-            backdrop-filter: blur(20px);
 
-            box-shadow: 0 15px 40px rgba(60,40,120,.10);
-        }
+/* ================= DARK MODE ================= */
 
-        body.dark nav {
-            background: rgba(25,25,45,.65);
-            border-color: rgba(255,255,255,.08);
-        }
+body.dark {
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+    background:
+        radial-gradient(
+            circle at top,
+            #252044,
+            #11111b 60%
+        );
 
-            font-size: 22px;
-            font-weight: 800;
-        }
+    color: #f5f5f7;
+}
 
-        .logo-icon {
-            width: 42px;
-            height: 42px;
+body.dark .navbar {
 
-            display: grid;
-            place-items: center;
+    background:
+        rgba(20,20,32,.82);
 
-            border-radius: 13px;
+    border-color:
+        rgba(255,255,255,.08);
+}
 
-            color: white;
-            font-size: 21px;
+body.dark .feature,
+body.dark .workspace,
+body.dark .result-card {
 
-            background: linear-gradient(135deg,#6d5dfc,#e84ca8);
+    background:
+        rgba(35,35,52,.82);
 
-            box-shadow: 0 8px 25px rgba(110,90,255,.35);
-        }
+    border-color:
+        rgba(255,255,255,.08);
 
-        .logo span {
-            background: linear-gradient(90deg,#6254ef,#d947a1);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+    color: #f5f5f7;
+}
 
-        .theme-btn {
-            border: none;
-            cursor: pointer;
+body.dark textarea {
 
-            width: 42px;
-            height: 42px;
+    background:
+        rgba(20,20,30,.8);
 
-            border-radius: 50%;
+    color: white;
 
-            font-size: 18px;
+    border-color:
+        rgba(255,255,255,.12);
+}
 
-            background: rgba(255,255,255,.8);
+body.dark textarea::placeholder {
+    color: #aaa;
+}
 
-            box-shadow: 0 5px 15px rgba(0,0,0,.08);
+body.dark .suggestion {
 
-            transition: .25s;
-        }
+    background:
+        rgba(255,255,255,.06);
 
-        .theme-btn:hover {
-            transform: rotate(15deg) scale(1.08);
-        }
+    color: #ddd;
+}
 
-        body.dark .theme-btn {
-            background: #202035;
-            color: white;
-        }
+body.dark .quiz-option {
 
-        /* ================= HERO ================= */
+    background:
+        rgba(255,255,255,.06) !important;
 
-        .hero {
-            width: min(1100px, 92%);
-            margin: 70px auto 55px;
-            text-align: center;
-        }
+    color: #eee;
+}
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
 
-            padding: 9px 16px;
+/* ================= NAVBAR ================= */
 
-            border-radius: 30px;
+.navbar {
 
-            font-size: 13px;
-            font-weight: 700;
+    position: sticky;
 
-            background: rgba(255,255,255,.65);
-            border: 1px solid rgba(255,255,255,.7);
+    top: 0;
 
-            box-shadow: 0 8px 25px rgba(70,50,150,.08);
+    z-index: 100;
 
-            animation: float 3s ease-in-out infinite;
-        }
+    display: flex;
 
-        body.dark .badge {
-            background: rgba(30,30,50,.7);
-            border-color: rgba(255,255,255,.08);
-        }
+    justify-content: space-between;
 
-        .hero h1 {
-            margin-top: 22px;
+    align-items: center;
 
-            font-size: clamp(45px, 8vw, 82px);
-            line-height: .98;
-            font-weight: 900;
-            letter-spacing: -4px;
+    padding:
+        16px 6%;
 
-            background:
-                linear-gradient(
-                    100deg,
-                    #5547ee,
-                    #8b55ff,
-                    #e44da4
-                );
+    background:
+        rgba(255,255,255,.72);
 
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+    backdrop-filter:
+        blur(18px);
 
-        .hero h2 {
-            margin-top: 18px;
+    border-bottom:
+        1px solid rgba(100,90,180,.1);
+}
 
-            font-size: clamp(21px, 3vw, 32px);
-            font-weight: 700;
-        }
 
-        .hero p {
-            max-width: 650px;
-            margin: 20px auto;
+.logo {
 
-            line-height: 1.7;
-            font-size: 16px;
+    display: flex;
 
-            opacity: .7;
-        }
+    align-items: center;
 
-        .hero-orb {
-            width: 95px;
-            height: 95px;
+    gap: 10px;
 
-            margin: 35px auto 0;
+    font-size: 21px;
 
-            border-radius: 50%;
+    font-weight: 800;
 
-            display: grid;
-            place-items: center;
+    letter-spacing: -.5px;
+}
 
-            color: white;
-            font-size: 40px;
 
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #ffffff,
-                    #a794ff 20%,
-                    #6856ef 55%,
-                    #d44ca4
-                );
+.logo-icon {
 
-            box-shadow:
-                0 0 0 15px rgba(115,90,255,.07),
-                0 0 70px rgba(111,80,255,.35);
+    width: 38px;
 
-            animation: orb 4s ease-in-out infinite;
-        }
+    height: 38px;
 
-        @keyframes orb {
+    display: flex;
 
-            0%,100% {
-                transform: translateY(0) scale(1);
-            }
+    align-items: center;
 
-            50% {
-                transform: translateY(-12px) scale(1.05);
-            }
+    justify-content: center;
 
-        }
+    border-radius: 12px;
 
-        @keyframes float {
+    background:
+        linear-gradient(
+            135deg,
+            #7c5cff,
+            #bd5cff
+        );
 
-            0%,100% {
-                transform: translateY(0);
-            }
+    color: white;
 
-            50% {
-                transform: translateY(-5px);
-            }
+    box-shadow:
+        0 8px 22px
+        rgba(124,92,255,.28);
+}
 
-        }
 
-        /* ================= FEATURES ================= */
+.theme-btn {
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    border: none;
 
-        .section-title h2 {
-            font-size: 27px;
-        }
+    width: 40px;
 
-        .section-title p {
-            margin-top: 7px;
-            opacity: .6;
-            font-size: 14px;
-        }
+    height: 40px;
 
-        .features {
-            width: min(1100px, 92%);
-            margin: auto;
+    border-radius: 50%;
 
-            display: grid;
-            grid-template-columns: repeat(5,1fr);
-            gap: 15px;
-        }
+    cursor: pointer;
 
-        .feature {
-            position: relative;
-            overflow: hidden;
+    background:
+        rgba(120,100,255,.1);
 
-            padding: 22px 16px;
+    font-size: 18px;
 
-            border-radius: 22px;
+    transition: .2s;
+}
 
-            cursor: pointer;
+.theme-btn:hover {
 
-            background: rgba(255,255,255,.58);
-            border: 1px solid rgba(255,255,255,.65);
+    transform:
+        rotate(15deg)
+        scale(1.08);
+}
 
-            backdrop-filter: blur(18px);
 
-            box-shadow: 0 12px 35px rgba(60,40,120,.08);
+/* ================= HERO ================= */
 
-            transition: .3s;
-        }
+.hero {
 
-        body.dark .feature {
-            background: rgba(25,25,45,.68);
-            border-color: rgba(255,255,255,.07);
-        }
+    position: relative;
 
-        .feature:hover {
-            transform: translateY(-7px);
+    text-align: center;
 
-            box-shadow:
-                0 20px 45px rgba(80,60,180,.18);
-        }
+    padding:
+        80px 20px 50px;
 
-        .feature.active {
-            transform: translateY(-5px);
+    overflow: hidden;
+}
 
-            border-color: #7865ff;
 
-            box-shadow:
-                0 15px 40px rgba(100,80,255,.25);
-        }
+.badge {
 
-        .feature-icon {
-            font-size: 29px;
-            margin-bottom: 12px;
-        }
+    display: inline-block;
 
-        .feature h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+    padding:
+        8px 15px;
 
-        .feature p {
-            font-size: 12px;
-            opacity: .6;
-            line-height: 1.5;
-        }
+    border-radius: 30px;
 
-        /* ================= WORKSPACE ================= */
+    background:
+        rgba(124,92,255,.1);
 
-        .workspace {
-            width: min(900px, 92%);
-            margin: 55px auto 80px;
+    color:
+        #7053e8;
 
-            padding: 30px;
+    font-size: 13px;
 
-            border-radius: 30px;
+    font-weight: 700;
 
-            background: rgba(255,255,255,.68);
-            border: 1px solid rgba(255,255,255,.8);
+    margin-bottom: 18px;
+}
 
-            backdrop-filter: blur(25px);
 
-            box-shadow:
-                0 25px 70px rgba(60,40,130,.12);
-        }
+.hero h1 {
 
-        body.dark .workspace {
-            background: rgba(22,22,39,.82);
-            border-color: rgba(255,255,255,.07);
-        }
+    margin: 0 auto;
 
-        .workspace-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    max-width: 850px;
 
-            margin-bottom: 20px;
-        }
+    font-size:
+        clamp(42px, 7vw, 76px);
 
-        .workspace-header h2 {
-            font-size: 23px;
-        }
+    line-height: 1;
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 7px;
+    letter-spacing: -3px;
 
-            font-size: 12px;
-            opacity: .65;
-        }
+    font-weight: 900;
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
+    background:
+        linear-gradient(
+            90deg,
+            #7255ff,
+            #bd55ff,
+            #ef67a5
+        );
 
-            border-radius: 50%;
+    -webkit-background-clip: text;
 
-            background: #31c48d;
+    -webkit-text-fill-color: transparent;
+}
 
-            box-shadow: 0 0 12px #31c48d;
-        }
 
-        textarea {
-            width: 100%;
-            min-height: 150px;
+.hero p {
 
-            resize: vertical;
+    max-width: 650px;
 
-            padding: 20px;
+    margin:
+        22px auto 0;
 
-            border: 1px solid rgba(120,100,220,.15);
-            border-radius: 20px;
+    font-size: 18px;
 
-            outline: none;
+    line-height: 1.7;
 
-            font-size: 15px;
-            line-height: 1.6;
+    color: #6d6d7c;
+}
 
-            color: inherit;
-            background: rgba(255,255,255,.7);
+body.dark .hero p {
+    color: #b7b7c7;
+}
 
-            transition: .25s;
-        }
 
-        body.dark textarea {
-            background: rgba(10,10,25,.65);
-            border-color: rgba(255,255,255,.08);
-        }
+/* ================= ORB ================= */
 
-        textarea:focus {
-            border-color: #7664ff;
+.orb {
 
-            box-shadow:
-                0 0 0 4px rgba(118,100,255,.1);
-        }
+    position: absolute;
 
-        .suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+    width: 260px;
 
-            margin-top: 13px;
-        }
+    height: 260px;
 
-        .suggestion {
-            border: none;
-            cursor: pointer;
+    border-radius: 50%;
 
-            padding: 8px 13px;
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            #cbbdff,
+            #8068ff,
+            transparent 70%
+        );
 
-            border-radius: 30px;
+    filter: blur(25px);
 
-            font-size: 12px;
+    opacity: .35;
 
-            background: rgba(120,100,255,.09);
-            color: inherit;
+    animation:
+        floatOrb 6s ease-in-out infinite;
 
-            transition: .2s;
-        }
+    left: -100px;
 
-        .suggestion:hover {
-            background: rgba(120,100,255,.18);
-            transform: translateY(-2px);
-        }.actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 18px;
-        }
+    top: 40px;
+}
 
-        .voice-btn,
-        .submit-btn {
-            border: none;
-            cursor: pointer;
 
-            min-height: 48px;
+@keyframes floatOrb {
 
-            border-radius: 15px;
+    0%,100% {
+        transform: translateY(0);
+    }
 
-            font-weight: 700;
+    50% {
+        transform: translateY(25px);
+    }
+}
 
-            transition: .25s;
-        }
 
-        .voice-btn {
-            width: 50px;
+/* ================= FEATURES ================= */
 
-            font-size: 19px;
+.features {
 
-            background: rgba(110,90,255,.1);
-            color: inherit;
-        }
+    max-width: 1100px;
 
-        .voice-btn:hover {
-            transform: scale(1.05);
-        }
+    margin:
+        10px auto 35px;
 
-        .submit-btn {
-            flex: 1;
+    padding:
+        0 20px;
 
-            color: white;
+    display: grid;
 
-            background:
-                linear-gradient(
-                    100deg,
-                    #6254ef,
-                    #9556f7,
-                    #e44ba5
-                );
+    grid-template-columns:
+        repeat(5, 1fr);
 
-            box-shadow:
-                0 10px 25px rgba(100,75,240,.25);
-        }
+    gap: 12px;
+}
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
 
-            box-shadow:
-                0 15px 35px rgba(100,75,240,.35);
-        }
+.feature {
 
-        .submit-btn:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-            transform: none;
-        }
+    border:
+        1px solid rgba(110,90,255,.1);
 
-        /* ================= LISTENING ================= */
+    background:
+        rgba(255,255,255,.7);
 
-        .listening {
-            display: none;
+    border-radius: 18px;
 
-            margin-top: 12px;
-            padding: 10px;
+    padding: 18px 12px;
 
-            border-radius: 12px;
+    text-align: center;
 
-            text-align: center;
+    cursor: pointer;
 
-            font-size: 13px;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
 
-            background: rgba(230,70,130,.08);
-        }
+    min-height: 125px;
 
-        .listening.show {
-            display: block;
-            animation: pulse 1s infinite;
-        }
+    display: flex;
 
-        @keyframes pulse {
+    flex-direction: column;
 
-            50% {
-                opacity: .45;
-            }
+    justify-content: center;
 
-        }
+    align-items: center;
+}
 
-        /* ================= LOADING ================= */
 
-        .loading {
-            display: none;
+.feature:hover {
 
-            text-align: center;
+    transform:
+        translateY(-5px);
 
-            padding: 25px;
-        }
+    box-shadow:
+        0 15px 35px
+        rgba(90,70,180,.12);
+}
 
-        .loading.show {
-            display: block;
-        }
 
-        .spinner {
-            width: 35px;
-            height: 35px;
+.feature.active {
 
-            margin: auto;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124,92,255,.15),
+            rgba(190,85,255,.12)
+        );
 
-            border: 4px solid rgba(110,90,255,.15);
+    border-color:
+        rgba(124,92,255,.35);
 
-            border-top-color: #6d5dfc;
+    box-shadow:
+        0 12px 30px
+        rgba(124,92,255,.12);
+}
 
-            border-radius: 50%;
 
-            animation: spin .8s linear infinite;
-        }
+.feature-icon {
 
-        @keyframes spin {
+    font-size: 28px;
 
-            to {
-                transform: rotate(360deg);
-            }
+    margin-bottom: 8px;
+}
 
-        }
 
-        .thinking {
-            margin-top: 10px;
+.feature-title {
 
-            font-size: 13px;
+    font-size: 14px;
 
-            opacity: .65;
-        }
+    font-weight: 800;
+}
 
-        /* ================= RESULT ================= */
 
-        .result-card {
-            display: none;
+.feature-subtitle {
 
-            margin-top: 25px;
+    margin-top: 5px;
 
-            padding: 25px;
+    font-size: 11px;
 
-            border-radius: 22px;
+    color: #858594;
+}
 
-            background: rgba(110,90,255,.06);
 
-            border: 1px solid rgba(110,90,255,.12);
+/* ================= WORKSPACE ================= */
 
-            animation: appear .4s ease;
-        }
+.workspace {
 
-        .result-card.show {
-            display: block;
-        }
+    max-width: 900px;
 
-        @keyframes appear {
+    margin:
+        0 auto 70px;
 
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+    padding:
+        28px;
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    border-radius: 26px;
 
-        }
+    background:
+        rgba(255,255,255,.78);
 
-        .result-top {
-            display: flex;
+    backdrop-filter:
+        blur(20px);
 
-            align-items: center;
+    border:
+        1px solid rgba(110,90,255,.1);
 
-            justify-content: space-between;
+    box-shadow:
+        0 20px 60px
+        rgba(70,50,150,.08);
+}
 
-            margin-bottom: 18px;
-        }
 
-        .ai-label {
-            font-weight: 800;
+.workspace-top {
 
-            font-size: 14px;
-        }
+    display: flex;
 
-        .read-actions {
-            display: flex;
+    justify-content: space-between;
 
-            gap: 7px;
-        }
+    align-items: center;
 
-        .read-btn {
-            border: none;
+    margin-bottom: 15px;
+}
 
-            cursor: pointer;
 
-            padding: 7px 10px;
+.task-title {
 
-            border-radius: 9px;
+    font-size: 23px;
 
-            background: rgba(110,90,255,.1);
+    font-weight: 850;
+}
 
-            color: inherit;
 
-            font-size: 12px;
-        }
+.status {
 
-        .result-content {
-            line-height: 1.7;
+    font-size: 12px;
 
-            font-size: 15px;
-        }
+    color: #6e59e8;
 
-        .result-content p {
-            margin-bottom: 10px;
-        }
+    background:
+        rgba(110,90,255,.1);
 
-        .result-content h3 {
-            margin: 16px 0 8px;
-        }
+    padding:
+        7px 11px;
 
-        .point {
-            display: flex;
+    border-radius: 20px;
+}
 
-            gap: 10px;
 
-            margin: 9px 0;
-        }
+textarea {
 
-        .point strong {
-            color: #6857ef;
-        }
+    width: 100%;
 
-        /* ================= FEEDBACK ================= */
+    min-height: 145px;
 
-        .feedback {
-            margin-top: 20px;
+    resize: vertical;
 
-            padding-top: 15px;
+    border-radius: 18px;
 
-            border-top: 1px solid rgba(100,80,180,.1);
+    border:
+        1px solid rgba(100,90,180,.16);
 
-            display: flex;
+    background:
+        rgba(255,255,255,.8);
 
-            align-items: center;
+    padding: 18px;
 
-            justify-content: space-between;
+    font-family: inherit;
 
-            font-size: 12px;
+    font-size: 15px;
 
-            opacity: .7;
-        }
+    line-height: 1.6;
 
-        .feedback-buttons {
-            display: flex;
+    outline: none;
 
-            gap: 7px;
-        }
+    transition: .2s;
+}
 
-        .feedback button {
-            border: none;
 
-            cursor: pointer;
+textarea:focus {
 
-            padding: 7px 10px;
+    border-color:
+        #8166ff;
 
-            border-radius: 9px;
+    box-shadow:
+        0 0 0 4px
+        rgba(129,102,255,.1);
+}
 
-            background: rgba(110,90,255,.08);
 
-            color: inherit;
-        }
+/* ================= SUGGESTIONS ================= */
 
-        /* ================= FOOTER ================= */
+.suggestions {
 
-        footer {
-            text-align: center;
+    display: flex;
 
-            padding: 30px;
+    flex-wrap: wrap;
 
-            font-size: 12px;
+    gap: 8px;
 
-            opacity: .55;
-        }
+    margin:
+        12px 0 18px;
+}
 
-        /* ================= RESPONSIVE ================= */
 
-        @media(max-width:850px) {
+.suggestion {
 
-            .features {
-                grid-template-columns: repeat(2,1fr);
-            }
+    border: none;
 
-            .feature:last-child {
-                grid-column: span 2;
-            }
+    border-radius: 20px;
 
-        }
+    padding:
+        8px 12px;
 
-        @media(max-width:600px) {
+    background:
+        rgba(120,100,255,.1);
 
-            nav {
-                margin-top: 10px;
-            }
+    color:
+        #624bd0;
 
-            .hero {
-                margin-top: 50px;
-            }
+    font-size: 12px;
 
-            .hero h1 {
-                letter-spacing: -2px;
-            }
+    cursor: pointer;
 
-            .features {
-                grid-template-columns: 1fr;
-            }
+    transition: .2s;
+}
 
-            .feature:last-child {
-                grid-column: auto;
-            }
 
-            .workspace {
-                padding: 20px;
-            }
+.suggestion:hover {
 
-            .feedback {
-                flex-direction: column;
+    background:
+        rgba(120,100,255,.18);
 
-                align-items: flex-start;
+    transform:
+        translateY(-2px);
+}
 
-                gap: 10px;
-            }
 
-        }
+/* ================= ACTIONS ================= */
 
-    </style>
+.actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    align-items: center;
+}
+
+
+.action-btn {
+
+    border: none;
+
+    border-radius: 13px;
+
+    padding:
+        12px 17px;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.voice-btn {
+
+    background:
+        rgba(120,100,255,.1);
+
+    color:
+        #6651d8;
+}
+
+
+.submit-btn {
+
+    margin-left: auto;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7255ff,
+            #b85cff
+        );
+
+    color: white;
+
+    box-shadow:
+        0 9px 22px
+        rgba(114,85,255,.25);
+}
+
+
+.action-btn:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+
+.action-btn:disabled {
+
+    opacity: .6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ================= LISTENING ================= */
+
+.listening {
+
+    display: none;
+
+    margin-top: 12px;
+
+    padding: 10px;
+
+    text-align: center;
+
+    color: #765cff;
+
+    font-size: 13px;
+}
+
+
+.listening.show {
+    display: block;
+}
+
+
+.listening-dot {
+
+    display: inline-block;
+
+    width: 8px;
+
+    height: 8px;
+
+    margin-right: 5px;
+
+    border-radius: 50%;
+
+    background: #765cff;
+
+    animation:
+        pulse 1s infinite;
+}
+
+
+@keyframes pulse {
+
+    0%,100% {
+        opacity: .3;
+        transform: scale(.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+
+/* ================= LOADING ================= */
+
+.loading {
+
+    display: none;
+
+    text-align: center;
+
+    padding: 25px;
+}
+
+
+.loading.show {
+    display: block;
+}
+
+
+.spinner {
+
+    width: 35px;
+
+    height: 35px;
+
+    margin: auto;
+
+    border:
+        4px solid rgba(120,100,255,.15);
+
+    border-top-color:
+        #765cff;
+
+    border-radius: 50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ================= RESULT ================= */
+
+.result-card {
+
+    display: none;
+
+    margin-top: 25px;
+
+    padding: 24px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.82);
+
+    border:
+        1px solid rgba(110,90,255,.1);
+
+    box-shadow:
+        0 15px 40px
+        rgba(70,50,150,.07);
+}
+
+
+.result-card.show {
+    display: block;
+}
+
+
+.result-title {
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    margin-bottom: 15px;
+}
+
+
+#result {
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+
+#result p {
+
+    margin:
+        8px 0;
+}
+
+
+#result h3 {
+
+    margin:
+        18px 0 8px;
+
+    color:
+        #6852dc;
+}
+
+
+.point {
+
+    display: flex;
+
+    gap: 9px;
+
+    margin:
+        9px 0;
+
+    align-items: flex-start;
+}
+
+
+.point strong {
+
+    color:
+        #7057e8;
+
+    flex-shrink: 0;
+}
+
+
+/* ================= RESULT TOOLS ================= */
+
+.result-tools {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 20px;
+
+    border-top:
+        1px solid rgba(100,90,180,.1);
+
+    padding-top: 15px;
+}
+
+
+.result-tool {
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding:
+        9px 13px;
+
+    cursor: pointer;
+
+    background:
+        rgba(110,90,255,.09);
+
+    color:
+        #6651d8;
+
+    font-weight: 600;
+
+    font-size: 12px;
+}
+
+
+/* ================= QUIZ ================= */
+
+.quiz-header {
+
+    padding-bottom: 8px;
+}
+
+
+.quiz-header h3 {
+
+    margin:
+        0 0 5px;
+}
+
+
+.quiz-header p {
+
+    color: #777;
+
+    margin: 0;
+}
+
+
+.quiz-question {
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    background:
+        rgba(110,90,255,.06);
+}
+
+
+.quiz-option {
+
+    margin-top: 10px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.65);
+
+    border:
+        1px solid transparent;
+
+    cursor: pointer;
+
+    transition:
+        .2s;
+}
+
+
+.quiz-option:hover {
+
+    transform:
+        translateX(3px);
+
+    border-color:
+        rgba(110,90,255,.3);
+}
+
+
+.quiz-option.correct {
+
+    background:
+        rgba(60,190,100,.18) !important;
+
+    border-color:
+        rgba(50,180,90,.6) !important;
+
+    color:
+        #16803c;
+
+}
+
+
+.quiz-option.wrong {
+
+    background:
+        rgba(240,70,80,.14) !important;
+
+    border-color:
+        rgba(230,70,80,.55) !important;
+
+    color:
+        #c62828;
+}
+
+
+.quiz-feedback {
+
+    animation:
+        feedbackIn .25s ease;
+}
+
+
+@keyframes feedbackIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-5px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+
+    text-align: center;
+
+    padding:
+        30px 20px 45px;
+
+    color: #858594;
+
+    font-size: 12px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+    .features {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .hero {
+
+        padding-top: 55px;
+
+    }
+
+
+    .hero h1 {
+
+        letter-spacing:
+            -2px;
+
+    }
+
+
+    .hero p {
+
+        font-size: 15px;
+
+    }
+
+
+    .features {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .workspace {
+
+        margin:
+            0 12px 50px;
+
+        padding: 18px;
+
+    }
+
+
+    .actions {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .submit-btn {
+
+        margin-left: 0;
+
+        width: 100%;
+
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -804,697 +1141,808 @@
 <body>
 
 
-    <!-- ================= NAVBAR ================= -->
+<!-- ================= NAVBAR ================= -->
 
-    <nav>
+<nav class="navbar">
 
-        <div class="logo">
+    <div class="logo">
 
-            <div class="logo-icon">
-                ✦
-            </div>
-
-            <span>EduGenie</span>
-
-        </div>
-
-        <button
-            class="theme-btn"
-            id="themeBtn"
-            onclick="toggleTheme()"
-            title="Toggle theme">
-
-            🌙
-
-        </button>
-
-    </nav>
-
-
-    <!-- ================= HERO ================= -->
-
-    <section class="hero">
-
-        <div class="badge">
-            ✨ AI-Powered Learning Assistant
-        </div>
-
-        <h1>
-            Learn Smarter.
-        </h1>
-
-        <h2>
-            Understand Faster. 🚀
-        </h2>
-
-        <p>
-            Ask questions, simplify difficult concepts,
-            practice with quizzes, summarize study material,
-            and build your personalized learning path —
-            all in one place.
-        </p>
-
-        <div class="hero-orb">
+        <div class="logo-icon">
             ✦
         </div>
 
-    </section>
+        EduGenie
+
+    </div>
 
 
-    <!-- ================= FEATURES ================= -->
+    <button
+        id="themeBtn"
+        class="theme-btn"
+        onclick="toggleTheme()"
+        aria-label="Toggle theme"
+    >
+        🌙
+    </button>
 
-    <div class="section-title">
+</nav>
 
-        <h2>
-            What do you want to learn?
-        </h2>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="orb"></div>
+
+    <div class="badge">
+        ✨ Your AI Learning Companion
+    </div>
+
+    <h1>
+        Learn smarter.<br>
+        Understand faster.
+    </h1>
+
+    <p>
+        Ask questions, understand difficult concepts,
+        create quizzes, summarize notes and build
+        personalized learning paths with EduGenie.
+    </p>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+
+    <div
+        class="feature active"
+        data-task="qa"
+    >
+
+        <div class="feature-icon">
+            💬
+        </div>
+
+        <div class="feature-title">
+            Ask
+        </div>
+
+        <div class="feature-subtitle">
+            Quick answers
+        </div>
+
+    </div>
+
+
+    <div
+        class="feature"
+        data-task="explain"
+    >
+
+        <div class="feature-icon">
+            💡
+        </div>
+
+        <div class="feature-title">
+            Explain
+        </div>
+
+        <div class="feature-subtitle">
+            Learn clearly
+        </div>
+
+    </div>
+
+
+    <div
+        class="feature"
+        data-task="quiz"
+    >
+
+        <div class="feature-icon">
+            🎯
+        </div>
+
+        <div class="feature-title">
+            Quiz
+        </div>
+
+        <div class="feature-subtitle">
+            Test yourself
+        </div>
+
+    </div>
+
+
+    <div
+        class="feature"
+        data-task="summarize"
+    >
+
+        <div class="feature-icon">
+            📝
+        </div>
+
+        <div class="feature-title">
+            Summarize
+        </div>
+
+        <div class="feature-subtitle">
+            Revise faster
+        </div>
+
+    </div>
+
+
+    <div
+        class="feature"
+        data-task="learn"
+    >
+
+        <div class="feature-icon">
+            🚀
+        </div>
+
+        <div class="feature-title">
+            Learning Path
+        </div>
+
+        <div class="feature-subtitle">
+            Build your roadmap
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WORKSPACE ================= -->
+
+<main class="workspace">
+
+
+    <div class="workspace-top">
+
+        <div
+            class="task-title"
+            id="taskTitle"
+        >
+            Ask EduGenie
+        </div>
+
+
+        <div class="status">
+            ● AI Ready
+        </div>
+
+    </div>
+
+
+    <textarea
+        id="question"
+        placeholder="Ask me anything about your studies..."
+    ></textarea>
+
+
+    <div class="suggestions">
+
+        <button
+            class="suggestion"
+            onclick="setExample('What is object oriented programming?')"
+        >
+            OOP basics
+        </button>
+
+
+        <button
+            class="suggestion"
+            onclick="setExample('Explain photosynthesis')"
+        >
+            Photosynthesis
+        </button>
+
+
+        <button
+            class="suggestion"
+            onclick="setExample('What is an algorithm?')"
+        >
+            Algorithms
+        </button>
+
+
+        <button
+            class="suggestion"
+            onclick="setExample('Explain DBMS')"
+        >
+            DBMS
+        </button>
+
+    </div>
+
+
+    <div
+        class="listening"
+        id="listening"
+    >
+
+        <span class="listening-dot"></span>
+
+        Listening...
+
+    </div>
+
+
+    <div class="actions">
+
+
+        <button
+            class="action-btn voice-btn"
+            id="voiceBtn"
+            onclick="startVoice()"
+        >
+            🎙️ Voice
+        </button>
+
+
+        <button
+            class="action-btn submit-btn"
+            id="submitBtn"
+            onclick="submitTask()"
+        >
+            ✨ Ask EduGenie
+        </button>
+
+    </div>
+
+
+    <div
+        class="loading"
+        id="loading"
+    >
+
+        <div class="spinner"></div>
 
         <p>
-            Choose a learning mode and let EduGenie help you.
+            EduGenie is thinking...
         </p>
 
     </div>
 
 
-    <section class="features">
+    <!-- ================= RESULT ================= -->
 
-        <div
-            class="feature active"
-            data-task="qa">
+    <section
+        class="result-card"
+        id="resultCard"
+    >
 
-            <div class="feature-icon">
-                💬
-            </div>
-
-            <h3>
-                Ask
-            </h3>
-
-            <p>
-                Get clear answers to your questions.
-            </p>
-
+        <div class="result-title">
+            ✨ EduGenie's Answer
         </div>
 
 
-        <div
-            class="feature"
-            data-task="explain">
-
-            <div class="feature-icon">
-                💡
-            </div>
-
-            <h3>
-                Explain
-            </h3>
-
-            <p>
-                Make difficult concepts simple.
-            </p>
-
-        </div>
+        <div id="result"></div>
 
 
-        <div
-            class="feature"
-            data-task="quiz">
-
-            <div class="feature-icon">
-                🎯
-            </div>
-
-            <h3>
-                Quiz
-            </h3>
-
-            <p>
-                Test your knowledge and practice.
-            </p>
-
-        </div>
+        <div class="result-tools">
 
 
-        <div
-            class="feature"
-            data-task="summarize">
-
-            <div class="feature-icon">
-                📝
-            </div>
-
-            <h3>
-                Summarize
-            </h3>
-
-            <p>
-                Turn long content into quick notes.
-            </p>
-
-        </div>
+            <button
+                class="result-tool"
+                onclick="readAnswer()"
+            >
+                🔊 Read aloud
+            </button>
 
 
-        <div
-            class="feature"
-            data-task="learn">
+            <button
+                class="result-tool"
+                onclick="stopReading()"
+            >
+                ⏹ Stop
+            </button>
 
-            <div class="feature-icon">
-                🚀
-            </div>
-
-            <h3>
-                Learning Path
-            </h3>
-
-            <p>
-                Discover what to learn next.
-            </p>
 
         </div>
 
     </section>
 
+</main>
 
-    <!-- ================= WORKSPACE ================= -->
 
-    <section class="workspace">
+<footer>
 
-        <div class="workspace-header">
+    Made with 💜 and AI · EduGenie
 
-            <div>
+</footer>
 
-                <h2 id="taskTitle">
-                    Ask EduGenie
-                </h2>
 
-            </div>
+<script>
 
-            <div class="status">
+/* ================= CONFIG ================= */
 
-                <span class="status-dot"></span>
+let currentTask = "qa";
 
-                AI Online
 
-            </div>
+const endpoints = {
 
-        </div>
+    qa: "/qa",
 
+    explain: "/explain",
 
-        <textarea
-            id="question"
-            placeholder="Ask me anything about your studies..."></textarea>
+    quiz: "/quiz",
 
+    summarize: "/summarize",
 
-        <!-- QUICK SUGGESTIONS -->
+    learn: "/learn/recommendations"
 
-        <div class="suggestions">
+};
 
-            <button
-                class="suggestion"
-                onclick="setExample('Explain binary search in simple words')">
 
-                🌳 Explain Binary Search
+const taskInfo = {
 
-            </button>
+    qa: {
 
-            <button
-                class="suggestion"
-                onclick="setExample('Quiz me on DBMS')">
+        title: "Ask EduGenie",
 
-                🎯 Quiz me on DBMS
+        placeholder:
+            "Ask me anything about your studies..."
 
-            </button>
+    },
 
-            <button
-                class="suggestion"
-                onclick="setExample('Explain OOP concepts for a beginner')">
+    explain: {
 
-                💻 OOP Basics
+        title: "Explain Simply",
 
-            </button>
+        placeholder:
+            "What concept should I explain?"
 
-            <button
-                class="suggestion"
-                onclick="setExample('Create a learning path for Python')">
+    },
 
-                🚀 Learn Python
+    quiz: {
 
-            </button>
+        title: "Test Your Knowledge",
 
-        </div>
+        placeholder:
+            "Enter a topic you want to be quizzed on..."
 
+    },
 
-        <!-- VOICE -->
+    summarize: {
 
-        <div
-            class="listening"
-            id="listening">
+        title: "Summarize Your Notes",
 
-            🔴 Listening... Speak now
+        placeholder:
+            "Paste the text you want me to summarize..."
 
-        </div>
+    },
 
+    learn: {
 
-        <!-- ACTIONS -->
+        title: "Build Your Learning Path",
 
-        <div class="actions">
+        placeholder:
+            "What subject or skill do you want to learn?"
 
-            <button
-                class="voice-btn"
-                id="voiceBtn"
-                onclick="startVoice()"
-                title="Voice input">
+    }
 
-                🎤
+};
 
-            </button>
 
-            <button
-                class="submit-btn"
-                id="submitBtn"
-                onclick="submitTask()">
+/* ================= ELEMENTS ================= */
 
-                ✨ Ask EduGenie
+const features =
+    document.querySelectorAll(".feature");
 
-            </button>
+const question =
+    document.getElementById("question");
 
-        </div>
+const taskTitle =
+    document.getElementById("taskTitle");
 
+const result =
+    document.getElementById("result");
 
-        <!-- LOADING -->
+const resultCard =
+    document.getElementById("resultCard");
 
-        <div
-            class="loading"
-            id="loading">
+const loading =
+    document.getElementById("loading");
 
-            <div class="spinner"></div>
+const submitBtn =
+    document.getElementById("submitBtn");
 
-            <div class="thinking">
-                EduGenie is thinking...
-            </div>
+const listening =
+    document.getElementById("listening");
 
-        </div>
 
+/* ================= FEATURE SWITCHING ================= */
 
-        <!-- RESULT -->
+features.forEach(feature => {
 
-        <div
-            class="result-card"
-            id="resultCard">
-
-            <div class="result-top">
-
-                <div class="ai-label">
-                    ✨ EduGenie Response
-                </div>
-
-                <div class="read-actions">
-
-                    <button
-                        class="read-btn"
-                        onclick="readAnswer()">
-
-                        🔊 Read
-
-                    </button>
-
-                    <button
-                        class="read-btn"
-                        onclick="stopReading()">
-
-                        ⏹ Stop
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="result-content"
-                id="result">
-
-            </div>
-
-
-            <div class="feedback">
-
-                <span>
-                    Was this helpful?
-                </span>
-
-                <div class="feedback-buttons">
-
-                    <button onclick="showFeedback('Thanks! 💜')">
-                        👍
-                    </button>
-
-                    <button onclick="showFeedback('We will improve it! ✨')">
-                        👎
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <footer>
-
-        Made with 💜 and AI · EduGenie
-
-    </footer><script>
-
-    /* ================= CONFIG ================= */
-
-    let currentTask = "qa";
-
-
-    const endpoints = {
-
-        qa: "/qa",
-
-        explain: "/explain",
-
-        quiz: "/quiz",
-
-        summarize: "/summarize",
-
-        learn: "/learn/recommendations"
-
-    };
-
-
-    const taskInfo = {
-
-        qa: {
-
-            title: "Ask EduGenie",
-
-            placeholder:
-                "Ask me anything about your studies..."
-
-        },
-
-        explain: {
-
-            title: "Explain Simply",
-
-            placeholder:
-                "What concept should I explain?"
-
-        },
-
-        quiz: {
-
-            title: "Test Your Knowledge",
-
-            placeholder:
-                "Enter a topic you want to be quizzed on..."
-
-        },
-
-        summarize: {
-
-            title: "Summarize Your Notes",
-
-            placeholder:
-                "Paste the text you want me to summarize..."
-
-        },
-
-        learn: {
-
-            title: "Build Your Learning Path",
-
-            placeholder:
-                "What subject or skill do you want to learn?"
-
-        }
-
-    };
-
-
-    /* ================= ELEMENTS ================= */
-
-    const features =
-        document.querySelectorAll(".feature");
-
-    const question =
-        document.getElementById("question");
-
-    const taskTitle =
-        document.getElementById("taskTitle");
-
-    const result =
-        document.getElementById("result");
-
-    const resultCard =
-        document.getElementById("resultCard");
-
-    const loading =
-        document.getElementById("loading");
-
-    const submitBtn =
-        document.getElementById("submitBtn");
-
-    const listening =
-        document.getElementById("listening");
-
-
-    /* ================= FEATURE SWITCHING ================= */
-
-    features.forEach(feature => {
-
-        feature.addEventListener("click", () => {
+    feature.addEventListener(
+        "click",
+        () => {
 
             features.forEach(item => {
 
-                item.classList.remove("active");
+                item.classList.remove(
+                    "active"
+                );
 
             });
 
-            feature.classList.add("active");
+
+            feature.classList.add(
+                "active"
+            );
+
 
             currentTask =
                 feature.dataset.task;
 
+
             taskTitle.textContent =
                 taskInfo[currentTask].title;
 
+
             question.placeholder =
                 taskInfo[currentTask].placeholder;
+
 
             submitBtn.textContent =
                 currentTask === "quiz"
                     ? "🎯 Start Quiz"
                     : "✨ Ask EduGenie";
 
+
             question.focus();
 
-        });
+        }
+    );
 
-    });
+});
 
 
-    /* ================= EXAMPLES ================= */
+/* ================= EXAMPLE ================= */
 
-    function setExample(text) {
+function setExample(text) {
 
-        question.value = text;
+    question.value = text;
 
-        question.focus();
+    question.focus();
+
+}
+
+
+/* ================= SAFE TEXT ================= */
+
+function getSafeText(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
 
     }
 
 
-    /* ================= FORMAT ANSWER ================= */
+    if (
+        typeof value === "string"
+    ) {
 
-    function formatAnswer(text) {
+        return value;
 
-        let cleanText = String(text);
-
-
-        /*
-         * Try to detect quiz JSON.
-         */
-
-        try {
-
-            const parsed =
-                JSON.parse(cleanText);
+    }
 
 
-            if (Array.isArray(parsed)) {
+    if (
+        typeof value === "number" ||
+        typeof value === "boolean"
+    ) {
 
-                return formatQuiz(parsed);
+        return String(value);
 
-            }
+    }
 
 
-            if (
-                parsed.questions &&
-                Array.isArray(parsed.questions)
-            ) {
+    if (Array.isArray(value)) {
 
-                return formatQuiz(
-                    parsed.questions
+        return value
+            .map(item =>
+                getSafeText(item)
+            )
+            .join("\n");
+
+    }
+
+
+    if (
+        typeof value === "object"
+    ) {
+
+        return (
+
+            value.text ||
+
+            value.answer ||
+
+            value.content ||
+
+            value.explanation ||
+
+            value.description ||
+
+            value.question ||
+
+            JSON.stringify(
+                value,
+                null,
+                2
+            )
+
+        );
+
+    }
+
+
+    return String(value);
+
+}
+
+
+/* ================= ESCAPE HTML ================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(text);
+
+    return div.innerHTML;
+
+}
+
+
+/* ================= FORMAT ANSWER ================= */
+
+function formatAnswer(data) {
+
+    let cleanText =
+        getSafeText(data);
+
+
+    try {
+
+        const parsed =
+            JSON.parse(cleanText);
+
+
+        if (Array.isArray(parsed)) {
+
+            return formatQuiz(parsed);
+
+        }
+
+
+        if (
+            parsed &&
+            parsed.questions &&
+            Array.isArray(
+                parsed.questions
+            )
+        ) {
+
+            return formatQuiz(
+                parsed.questions
+            );
+
+        }
+
+
+        if (
+            parsed &&
+            parsed.error
+        ) {
+
+            return `
+                <p>
+                    ${escapeHTML(
+                        getSafeText(
+                            parsed.error
+                        )
+                    )}
+                </p>
+            `;
+
+        }
+
+    }
+
+    catch (error) {
+
+        /* Normal text response */
+
+    }
+
+
+    const lines =
+        cleanText.split("\n");
+
+
+    let html = "";
+
+
+    lines.forEach(line => {
+
+        line = line.trim();
+
+
+        if (!line) {
+            return;
+        }
+
+
+        if (
+            /^#{1,6}\s*/.test(line)
+        ) {
+
+            const heading =
+                line.replace(
+                    /^#{1,6}\s*/,
+                    ""
                 );
 
-            }
+
+            html += `
+
+                <h3>
+                    ${escapeHTML(
+                        heading
+                    )}
+                </h3>
+
+            `;
 
         }
 
-        catch (error) {
 
-            /* Normal text response */
+        else if (
+            /^\d+[\.\)]\s*/.test(line)
+        ) {
+
+            const match =
+                line.match(
+                    /^(\d+)[\.\)]\s*(.*)$/
+                );
+
+
+            html += `
+
+                <div class="point">
+
+                    <strong>
+                        ${match[1]}.
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            match[2]
+                        )}
+                    </span>
+
+                </div>
+
+            `;
 
         }
 
 
-        const lines =
-            cleanText.split("\n");
+        else if (
+            /^[-*•]\s*/.test(line)
+        ) {
 
-        let html = "";
+            const content =
+                line.replace(
+                    /^[-*•]\s*/,
+                    ""
+                );
 
 
-        lines.forEach(line => {
+            html += `
 
-            line = line.trim();
+                <div class="point">
+
+                    <strong>
+                        •
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            content
+                        )}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
 
 
-            if (!line) {
+        else {
+
+            html += `
+
+                <p>
+                    ${escapeHTML(line)}
+                </p>
+
+            `;
+
+        }
+
+    });
+
+
+    return html;
+
+}
+
+
+/* ================= QUIZ ================= */
+
+function formatQuiz(questions) {
+
+    let html = `
+
+        <div class="quiz-header">
+
+            <h3>
+                🎯 Your Quiz
+            </h3>
+
+            <p>
+                Choose the best answer for each question.
+            </p>
+
+        </div>
+
+    `;
+
+
+    if (
+        !Array.isArray(questions)
+    ) {
+
+        return `
+            <p>
+                Unable to display the quiz.
+            </p>
+        `;
+
+    }
+
+
+    questions.forEach(
+        (q, index) => {
+
+            if (
+                typeof q !== "object" ||
+                q === null
+            ) {
 
                 return;
 
             }
 
-
-            /* HEADINGS */
-
-            if (/^#{1,6}\s*/.test(line)) {
-
-                const heading =
-                    line.replace(
-                        /^#{1,6}\s*/,
-                        ""
-                    );
-
-
-                html += `
-                    <h3>
-                        ${escapeHTML(heading)}
-                    </h3>
-                `;
-
-            }
-
-
-            /* NUMBERED POINTS */
-
-            else if (
-                /^\d+[\.\)]\s*/.test(line)
-            ) {
-
-                const match =
-                    line.match(
-                        /^(\d+)[\.\)]\s*(.*)$/
-                    );
-
-
-                html += `
-                    <div class="point">
-
-                        <strong>
-                            ${match[1]}.
-                        </strong>
-
-                        <span>
-                            ${escapeHTML(match[2])}
-                        </span>
-
-                    </div>
-                `;
-
-            }
-
-
-            /* BULLET POINTS */
-
-            else if (
-                /^[-*•]\s*/.test(line)
-            ) {
-
-                const content =
-                    line.replace(
-                        /^[-*•]\s*/,
-                        ""
-                    );
-
-
-                html += `
-                    <div class="point">
-
-                        <strong>
-                            •
-                        </strong>
-
-                        <span>
-                            ${escapeHTML(content)}
-                        </span>
-
-                    </div>
-                `;
-
-            }
-
-
-            /* NORMAL TEXT */
-
-            else {
-
-                html += `
-                    <p>
-                        ${escapeHTML(line)}
-                    </p>
-                `;
-
-            }
-
-        });
-
-
-        return html;
-
-    }
-
-
-    /* ================= QUIZ FORMAT ================= */
-
-    function formatQuiz(questions) {
-
-        let html = `
-
-            <div class="quiz-header">
-
-                <h3>
-                    🎯 Your Quiz
-                </h3>
-
-                <p>
-                    Choose the best answer for each question.
-                </p>
-
-            </div>
-
-        `;
-
-
-        questions.forEach((q, index) => {
 
             const questionText =
                 q.question ||
@@ -1504,27 +1952,36 @@
 
 
             const options =
-                q.options ||
-                q.choices ||
-                [];
+                Array.isArray(q.options)
+                    ? q.options
+                    : Array.isArray(q.choices)
+                        ? q.choices
+                        : [];
+
+
+            const correctAnswer =
+                q.answer ||
+                q.correct_answer ||
+                q.correctAnswer ||
+                "";
 
 
             html += `
 
                 <div
                     class="quiz-question"
-                    style="
-                        margin-top:20px;
-                        padding:18px;
-                        border-radius:16px;
-                        background:rgba(110,90,255,.06);
-                    "
+                    data-question-index="${index}"
                 >
 
                     <strong>
 
                         ${index + 1}.
-                        ${escapeHTML(questionText)}
+
+                        ${escapeHTML(
+                            getSafeText(
+                                questionText
+                            )
+                        )}
 
                     </strong>
 
@@ -1534,11 +1991,21 @@
             options.forEach(
                 (option, optionIndex) => {
 
-                    let label = option;
+                    let label = "";
 
 
                     if (
-                        typeof option === "object"
+                        typeof option === "string"
+                    ) {
+
+                        label = option;
+
+                    }
+
+
+                    else if (
+                        typeof option === "object" &&
+                        option !== null
                     ) {
 
                         label =
@@ -1546,39 +2013,66 @@
                             option.label ||
                             option.option ||
                             option.answer ||
+                            option.value ||
                             "";
 
                     }
 
 
+                    else {
+
+                        label =
+                            String(option);
+
+                    }
+
+
+                    const labelText =
+                        getSafeText(label);
+
+
+                    const isCorrect =
+
+                        labelText
+                            .trim()
+                            .toLowerCase() ===
+
+                        getSafeText(
+                            correctAnswer
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
                     html += `
 
                         <div
+
                             class="quiz-option"
-                            style="
-                                margin-top:10px;
-                                padding:12px 14px;
-                                border-radius:12px;
-                                background:rgba(255,255,255,.65);
-                                cursor:pointer;
-                                transition:.2s;
-                            "
+
+                            data-correct="${isCorrect}"
+
+                            data-answer="${escapeHTML(
+                                labelText
+                            )}"
 
                             onclick="
                                 selectQuizOption(this)
                             "
+
                         >
 
                             <strong>
 
                                 ${String.fromCharCode(
-                                    65 + optionIndex
+                                    65 +
+                                    optionIndex
                                 )}.
 
                             </strong>
 
                             ${escapeHTML(
-                                String(label)
+                                labelText
                             )}
 
                         </div>
@@ -1591,440 +2085,633 @@
 
             html += `
 
+                <div
+                    class="quiz-feedback"
+                    style="
+                        display:none;
+                        margin-top:12px;
+                        padding:10px 12px;
+                        border-radius:10px;
+                        font-weight:600;
+                        font-size:13px;
+                    "
+                ></div>
+
                 </div>
 
             `;
-
-        });
-
-
-        return html;
-
-    }
-
-
-    /* ================= QUIZ SELECTION ================= */
-
-    function selectQuizOption(element) {
-
-        const parent =
-            element.parentElement;
-
-
-        parent
-            .querySelectorAll(".quiz-option")
-            .forEach(option => {
-
-                option.style.background =
-                    "rgba(110,90,255,.06)";
-
-                option.style.border =
-                    "1px solid transparent";
-
-            });
-
-
-        element.style.background =
-            "rgba(110,90,255,.18)";
-
-        element.style.border =
-            "1px solid rgba(110,90,255,.35)";
-
-    }
-
-
-    /* ================= HTML SECURITY ================= */
-
-    function escapeHTML(text) {
-
-        const div =
-            document.createElement("div");
-
-
-        div.textContent =
-            text;
-
-
-        return div.innerHTML;
-
-    }
-
-
-    /* ================= SUBMIT ================= */
-
-    async function submitTask() {
-
-        const text =
-            question.value.trim();
-
-
-        if (!text) {
-
-            question.focus();
-
-            return;
-
-        }
-
-
-        stopReading();
-
-
-        resultCard.classList.remove(
-            "show"
-        );
-
-
-        loading.classList.add(
-            "show"
-        );
-
-
-        submitBtn.disabled =
-            true;
-
-
-        try {
-
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "question",
-                text
-            );
-
-
-            const response =
-                await fetch(
-                    endpoints[currentTask],
-                    {
-                        method: "POST",
-                        body: formData
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            result.innerHTML =
-                formatAnswer(
-                    data.answer ||
-                    "No response received."
-                );
-
-
-            resultCard.classList.add(
-                "show"
-            );
-
-
-            setTimeout(() => {
-
-                resultCard.scrollIntoView({
-
-                    behavior: "smooth",
-
-                    block: "nearest"
-
-                });
-
-            }, 100);
-
-        }
-
-
-        catch (error) {
-
-            result.innerHTML = `
-
-                <p>
-
-                    Something went wrong.
-
-                    Please check that the
-                    EduGenie server is running
-                    and try again.
-
-                </p>
-
-            `;
-
-
-            resultCard.classList.add(
-                "show"
-            );
-
-        }
-
-
-        finally {
-
-            loading.classList.remove(
-                "show"
-            );
-
-
-            submitBtn.disabled =
-                false;
-
-        }
-
-    }
-
-
-    /* ================= CTRL + ENTER ================= */
-
-    question.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter" &&
-                (event.ctrlKey ||
-                 event.metaKey)
-            ) {
-
-                submitTask();
-
-            }
 
         }
     );
 
 
-    /* ================= VOICE INPUT ================= */
+    return html;
 
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+}
 
 
-    let recognition;
+/* ================= QUIZ OPTION ================= */
+
+function selectQuizOption(element) {
+
+    const parent =
+        element.closest(
+            ".quiz-question"
+        );
 
 
-    if (SpeechRecognition) {
-
-        recognition =
-            new SpeechRecognition();
-
-
-        recognition.lang =
-            "en-IN";
+    if (!parent) {
+        return;
+    }
 
 
-        recognition.interimResults =
-            false;
+    if (
+        parent.dataset.answered ===
+        "true"
+    ) {
+
+        return;
+
+    }
 
 
-        recognition.continuous =
-            false;
+    parent.dataset.answered =
+        "true";
 
 
-        recognition.onstart = () => {
-
-            listening.classList.add(
-                "show"
-            );
-
-        };
+    const allOptions =
+        parent.querySelectorAll(
+            ".quiz-option"
+        );
 
 
-        recognition.onend = () => {
-
-            listening.classList.remove(
-                "show"
-            );
-
-        };
+    const feedback =
+        parent.querySelector(
+            ".quiz-feedback"
+        );
 
 
-        recognition.onresult =
-            event => {
-
-                question.value =
-                    event
-                        .results[0][0]
-                        .transcript;
+    const isCorrect =
+        element.dataset.correct ===
+        "true";
 
 
-                question.focus();
+    allOptions.forEach(option => {
 
-            };
+        option.style.cursor =
+            "default";
+
+    });
 
 
-        recognition.onerror = () => {
+    if (isCorrect) {
 
-            listening.classList.remove(
-                "show"
-            );
+        element.classList.add(
+            "correct"
+        );
 
-        };
+
+        feedback.style.display =
+            "block";
+
+
+        feedback.style.background =
+            "rgba(60,190,100,.12)";
+
+
+        feedback.style.color =
+            "#16803c";
+
+
+        feedback.innerHTML =
+            "✅ Correct! Great job! 🎉";
 
     }
 
 
     else {
 
-        document.getElementById(
-            "voiceBtn"
-        ).style.display = "none";
+        element.classList.add(
+            "wrong"
+        );
+
+
+        let correctOption =
+            null;
+
+
+        allOptions.forEach(
+            option => {
+
+                if (
+                    option.dataset.correct ===
+                    "true"
+                ) {
+
+                    correctOption =
+                        option;
+
+                    option.classList.add(
+                        "correct"
+                    );
+
+                }
+
+            }
+        );
+
+
+        const correctText =
+            correctOption
+                ? correctOption.dataset.answer
+                : "the highlighted option";
+
+
+        feedback.style.display =
+            "block";
+
+
+        feedback.style.background =
+            "rgba(240,70,80,.10)";
+
+
+        feedback.style.color =
+            "#c62828";
+
+
+        feedback.innerHTML =
+
+            `❌ Wrong! The correct answer is:
+            <strong>
+                ${escapeHTML(
+                    correctText
+                )}
+            </strong>`;
+
+    }
+
+}
+
+
+/* ================= SUBMIT ================= */
+
+async function submitTask() {
+
+    const text =
+        question.value.trim();
+
+
+    if (!text) {
+
+        question.focus();
+
+        return;
 
     }
 
 
-    /* ================= START VOICE ================= */
+    stopReading();
 
-    function startVoice() {
 
-        if (!recognition) {
+    resultCard.classList.remove(
+        "show"
+    );
 
-            alert(
-                "Voice input is not supported in this browser."
+
+    loading.classList.add(
+        "show"
+    );
+
+
+    submitBtn.disabled =
+        true;
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "question",
+            text
+        );
+
+
+        const response =
+            await fetch(
+                endpoints[currentTask],
+                {
+                    method: "POST",
+                    body: formData
+                }
             );
 
-            return;
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned an error."
+            );
 
         }
 
 
-        stopReading();
+        result.innerHTML =
+            formatAnswer(
+                data.answer ||
+                "No response received."
+            );
 
 
-        recognition.start();
+        resultCard.classList.add(
+            "show"
+        );
+
+
+        setTimeout(() => {
+
+            resultCard.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
+
+        }, 100);
 
     }
 
 
-    /* ================= READ ALOUD ================= */
+    catch (error) {
 
-    function readAnswer() {
+        result.innerHTML = `
+
+            <p>
+                Something went wrong.
+                Please check that the
+                EduGenie server is running
+                and try again.
+            </p>
+
+        `;
+
+
+        resultCard.classList.add(
+            "show"
+        );
+
+    }
+
+
+    finally {
+
+        loading.classList.remove(
+            "show"
+        );
+
+
+        submitBtn.disabled =
+            false;
+
+    }
+
+}
+
+
+/* ================= CTRL + ENTER ================= */
+
+question.addEventListener(
+    "keydown",
+    event => {
 
         if (
-            !("speechSynthesis" in window)
+            event.key === "Enter" &&
+            (
+                event.ctrlKey ||
+                event.metaKey
+            )
         ) {
 
-            return;
-
-        }
-
-
-        stopReading();
-
-
-        const text =
-            document.getElementById(
-                "result"
-            ).innerText;
-
-
-        if (!text.trim()) {
-
-            return;
-
-        }
-
-
-        const speech =
-            new SpeechSynthesisUtterance(
-                text
-            );
-
-
-        speech.lang =
-            "en-IN";
-
-
-        speech.rate =
-            0.95;
-
-
-        speech.pitch =
-            1;
-
-
-        window.speechSynthesis.speak(
-            speech
-        );
-
-    }
-
-
-    /* ================= STOP READING ================= */
-
-    function stopReading() {
-
-        if (
-            "speechSynthesis" in window
-        ) {
-
-            window.speechSynthesis.cancel();
+            submitTask();
 
         }
 
     }
+);
 
 
-    /* ================= THEME ================= */
+/* ================= VOICE INPUT ================= */
 
-    function toggleTheme() {
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
-        document.body.classList.toggle(
-            "dark"
+
+let recognition;
+
+
+if (SpeechRecognition) {
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "en-IN";
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.onstart = () => {
+
+        listening.classList.add(
+            "show"
         );
 
-
-        const dark =
-            document.body.classList.contains(
-                "dark"
-            );
+    };
 
 
-        document.getElementById(
-            "themeBtn"
-        ).textContent =
-            dark ? "☀️" : "🌙";
+    recognition.onend = () => {
 
-
-        localStorage.setItem(
-            "edugenie-theme",
-            dark ? "dark" : "light"
+        listening.classList.remove(
+            "show"
         );
+
+    };
+
+
+    recognition.onresult =
+        event => {
+
+            question.value =
+                event.results[0][0]
+                    .transcript;
+
+            question.focus();
+
+        };
+
+
+    recognition.onerror = () => {
+
+        listening.classList.remove(
+            "show"
+        );
+
+    };
+
+}
+
+
+else {
+
+    document.getElementById(
+        "voiceBtn"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ================= START VOICE ================= */
+
+function startVoice() {
+
+    if (!recognition) {
+
+        alert(
+            "Voice input is not supported in this browser."
+        );
+
+        return;
 
     }
 
 
-    /* ================= LOAD THEME ================= */
+    stopReading();
+
+
+    recognition.start();
+
+}
+
+
+/* ================= READ ALOUD ================= */
+
+function readAnswer() {
 
     if (
-        localStorage.getItem(
-            "edugenie-theme"
-        ) === "dark"
+        !("speechSynthesis" in window)
     ) {
 
-        document.body.classList.add(
+        return;
+
+    }
+
+
+    stopReading();
+
+
+    const resultElement =
+        document.getElementById(
+            "result"
+        );
+
+
+    if (!resultElement) {
+        return;
+    }
+
+
+    let text =
+        resultElement.innerText;
+
+
+    if (!text.trim()) {
+        return;
+    }
+
+
+    /*
+       Clean the response before
+       sending it to speech synthesis.
+    */
+
+
+    /* Remove emojis */
+
+    text = text.replace(
+        /[\u{1F300}-\u{1FAFF}]/gu,
+        ""
+    );
+
+
+    /* Remove bullet symbols */
+
+    text = text.replace(
+        /[•●○▪▫◦◆◇■□►▸→⇒]/g,
+        ""
+    );
+
+
+    /* Remove Markdown symbols */
+
+    text = text.replace(
+        /[*_~`#]/g,
+        ""
+    );
+
+
+    /* Remove decorative lines */
+
+    text = text.replace(
+        /[-]{2,}/g,
+        " "
+    );
+
+
+    /* Remove A. B. C. D. */
+
+    text = text.replace(
+        /^\s*[A-D][.)]\s*/gm,
+        ""
+    );
+
+
+    /* Remove numbered formatting */
+
+    text = text.replace(
+        /^\s*\d+[.)]\s*/gm,
+        ""
+    );
+
+
+    /* Remove extra spaces */
+
+    text = text.replace(
+        /\s+/g,
+        " "
+    );
+
+
+    /* Clean spaces before punctuation */
+
+    text = text.replace(
+        /\s+([,.!?;:])/g,
+        "$1"
+    );
+
+
+    text = text.trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    speech.lang =
+        "en-IN";
+
+
+    speech.rate =
+        0.95;
+
+
+    speech.pitch =
+        1;
+
+
+    window.speechSynthesis.speak(
+        speech
+    );
+
+}
+
+
+/* ================= STOP READING ================= */
+
+function stopReading() {
+
+    if (
+        "speechSynthesis" in window
+    ) {
+
+        window.speechSynthesis.cancel();
+
+    }
+
+}
+
+
+/* ================= THEME ================= */
+
+function toggleTheme() {
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+
+    const dark =
+        document.body.classList.contains(
             "dark"
         );
 
 
-        document.getElementById(
-            "themeBtn"
-        ).textContent =
-            "☀️";
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        dark
+            ? "☀️"
+            : "🌙";
 
-    }
+
+    localStorage.setItem(
+        "edugenie-theme",
+        dark
+            ? "dark"
+            : "light"
+    );
+
+}
 
 
-    /* ================= FEEDBACK ================= */
+/* ================= LOAD THEME ================= */
 
-    function showFeedback(message) {
+if (
+    localStorage.getItem(
+        "edugenie-theme"
+    ) === "dark"
+) {
 
-        alert(message);
+    document.body.classList.add(
+        "dark"
+    );
 
-    }
+
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        "☀️";
+
+}
 
 </script>
 
